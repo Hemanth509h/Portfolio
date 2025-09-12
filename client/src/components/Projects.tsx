@@ -1,5 +1,8 @@
+import { useState, useMemo } from "react";
 import { ProjectCard } from "./ProjectCard";
+import { ProjectFilter } from "./ProjectFilter";
 import { Button } from "@/components/ui/button";
+import { Search } from "lucide-react";
 
 // Mock project data - todo: replace with real project data
 const projects = [
@@ -36,9 +39,47 @@ const projects = [
     liveUrl: "https://example.com",
     githubUrl: "https://github.com",
   },
+  {
+    title: "AI Content Generator",
+    description: "An intelligent content generation tool using machine learning to create blog posts, social media content, and marketing copy.",
+    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&h=400&fit=crop",
+    technologies: ["Python", "FastAPI", "OpenAI API", "React", "Redis"],
+    liveUrl: "https://example.com",
+    githubUrl: "https://github.com",
+  },
+  {
+    title: "Real-time Chat Platform",
+    description: "A scalable chat application with real-time messaging, file sharing, voice calls, and team collaboration features.",
+    image: "https://images.unsplash.com/photo-1611606063065-ee7946f0787a?w=600&h=400&fit=crop",
+    technologies: ["Vue.js", "Socket.io", "Node.js", "Redis", "WebRTC"],
+    liveUrl: "https://example.com",
+    githubUrl: "https://github.com",
+  },
 ];
 
 export function Projects() {
+  const [selectedTechnologies, setSelectedTechnologies] = useState<string[]>([]);
+
+  // Get all unique technologies from projects
+  const allTechnologies = useMemo(() => {
+    const techSet = new Set<string>();
+    projects.forEach(project => {
+      project.technologies.forEach(tech => techSet.add(tech));
+    });
+    return Array.from(techSet).sort();
+  }, []);
+
+  // Filter projects based on selected technologies
+  const filteredProjects = useMemo(() => {
+    if (selectedTechnologies.length === 0) {
+      return projects;
+    }
+    return projects.filter(project =>
+      selectedTechnologies.every(tech =>
+        project.technologies.includes(tech)
+      )
+    );
+  }, [selectedTechnologies]);
   return (
     <section id="projects" className="py-24 bg-muted/30">
       <div className="max-w-6xl mx-auto px-6">
@@ -52,10 +93,39 @@ export function Projects() {
           </p>
         </div>
 
+        <ProjectFilter
+          technologies={allTechnologies}
+          selectedTechnologies={selectedTechnologies}
+          onFilterChange={setSelectedTechnologies}
+        />
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {projects.map((project, index) => (
-            <ProjectCard key={index} {...project} />
-          ))}
+          {filteredProjects.length > 0 ? (
+            filteredProjects.map((project, index) => (
+              <div
+                key={project.title}
+                className="animate-in fade-in slide-in-from-bottom-4 duration-500"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <ProjectCard {...project} />
+              </div>
+            ))
+          ) : (
+            <div className="col-span-full text-center py-16">
+              <div className="text-muted-foreground mb-4">
+                <Search className="h-16 w-16 mx-auto mb-4 text-muted-foreground/50" />
+                <h3 className="text-xl font-semibold mb-2">No projects found</h3>
+                <p>Try adjusting your technology filters to see more projects.</p>
+              </div>
+              <Button
+                variant="outline"
+                onClick={() => setSelectedTechnologies([])}
+                data-testid="button-clear-all-filters"
+              >
+                Clear All Filters
+              </Button>
+            </div>
+          )}
         </div>
 
         <div className="text-center mt-12">
