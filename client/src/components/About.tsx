@@ -98,7 +98,7 @@ export function About() {
                 variant="outline" 
                 size="lg"
                 data-testid="button-download-cv"
-                onClick={() => console.log("CV download clicked")}
+                onClick={() => window.location.href = "/api/resume/download"}
               >
                 <Download className="h-4 w-4 mr-2" />
                 Download CV

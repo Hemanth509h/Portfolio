@@ -4,6 +4,13 @@ import { storage } from "./storage";
 import { insertContactSchema } from "@shared/schema";
 import { z } from "zod";
 import nodemailer from "nodemailer";
+import path from "path";
+import fs from "fs";
+import { fileURLToPath } from "url";
+
+// ES module equivalent of __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Simple rate limiting - Track IPs and submission times
@@ -103,6 +110,58 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({
         success: false,
         message: "Something went wrong. Please try again later."
+      });
+    }
+  });
+
+  // Resume download endpoint
+  app.get("/api/resume/download", (req, res) => {
+    console.log("📄 Resume download requested");
+    try {
+      // Use different path resolution approaches
+      let resumePath = path.join(process.cwd(), "server", "public", "resume.txt");
+      
+      // Check if file exists
+      if (!fs.existsSync(resumePath)) {
+        // Try alternative path
+        resumePath = path.join(__dirname, "public", "resume.txt");
+        
+        if (!fs.existsSync(resumePath)) {
+          console.log("❌ Resume file not found");
+          return res.status(404).json({
+            success: false,
+            message: "Resume file not found"
+          });
+        }
+      }
+      
+      console.log("✅ Resume file found, serving download");
+      
+      // Set appropriate headers for secure file download
+      res.setHeader("Content-Type", "text/plain; charset=utf-8");
+      res.setHeader("Content-Disposition", "attachment; filename=Alex_Johnson_Resume.txt");
+      res.setHeader("X-Content-Type-Options", "nosniff");
+      res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+      
+      // Use streaming instead of loading entire file into memory
+      res.download(resumePath, "Alex_Johnson_Resume.txt", (err) => {
+        if (err) {
+          console.error("❌ Resume download stream error:", err.message);
+          if (!res.headersSent) {
+            res.status(500).json({
+              success: false,
+              message: "Failed to download resume"
+            });
+          }
+        } else {
+          console.log("✅ Resume download completed successfully");
+        }
+      });
+    } catch (error) {
+      console.error("❌ Resume download error:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to download resume"
       });
     }
   });
