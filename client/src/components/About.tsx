@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Download, MapPin, Calendar } from "lucide-react";
+import { ScrollReveal } from "@/components/ScrollReveal";
 
 export function About() {
   const scrollToContact = () => {
@@ -10,29 +11,34 @@ export function About() {
   return (
     <section id="about" className="py-24 bg-muted/30">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4 text-foreground">
-            About Me
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Get to know the developer behind the code. My journey, passion, and what drives me to create exceptional digital experiences.
-          </p>
-        </div>
+        <ScrollReveal>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-4 text-foreground">
+              About Me
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Get to know the developer behind the code. My journey, passion, and what drives me to create exceptional digital experiences.
+            </p>
+          </div>
+        </ScrollReveal>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Profile Image */}
-          <div className="relative">
-            <div className="aspect-square bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl flex items-center justify-center">
-              <div className="w-80 h-80 bg-muted rounded-xl flex items-center justify-center">
-                <div className="text-muted-foreground text-6xl font-mono">
-                  &lt;/&gt;
+          <ScrollReveal direction="left" delay={100}>
+            <div className="relative">
+              <div className="aspect-square bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl flex items-center justify-center">
+                <div className="w-80 h-80 bg-muted rounded-xl flex items-center justify-center">
+                  <div className="text-muted-foreground text-6xl font-mono">
+                    &lt;/&gt;
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* About Content */}
-          <div>
+          <ScrollReveal direction="right" delay={200}>
+            <div>
             <h3 className="text-2xl font-semibold mb-6 text-foreground">
               Passionate Full Stack Developer
             </h3>
@@ -98,7 +104,8 @@ export function About() {
                 Download CV
               </Button>
             </div>
-          </div>
+            </div>
+          </ScrollReveal>
         </div>
       </div>
     </section>
