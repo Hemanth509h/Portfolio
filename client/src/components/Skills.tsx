@@ -1,32 +1,25 @@
-import { Code, Database, Palette, Globe } from "lucide-react";
+import { Code } from "lucide-react";
 import { SkillCard } from "./SkillCard";
 import { ScrollReveal } from "@/components/ScrollReveal";
-
-// Mock skills data - todo: replace with real skills data
-const skillCategories = [
-  {
-    icon: Code,
-    title: "Frontend Development",
-    skills: ["React/Next.js", "TypeScript", "TailwindCSS", "Vue.js", "Angular"],
-  },
-  {
-    icon: Database,
-    title: "Backend Development",
-    skills: ["Node.js", "Python", "PostgreSQL", "MongoDB", "Redis"],
-  },
-  {
-    icon: Globe,
-    title: "DevOps & Tools",
-    skills: ["Docker", "AWS", "CI/CD", "Git", "Linux"],
-  },
-  {
-    icon: Palette,
-    title: "Design & UX",
-    skills: ["Figma", "UI/UX Design", "Responsive Design", "Accessibility", "Prototyping"],
-  },
-];
+import { useQuery } from "@tanstack/react-query";
 
 export function Skills() {
+  const { data: portfolioData } = useQuery({
+    queryKey: ["/api/portfolio"],
+  });
+
+  // Use skills from API or fallback to default skills
+  const skills = portfolioData?.skills || ["React", "TypeScript", "Node.js", "PostgreSQL", "TailwindCSS"];
+
+  // Group skills into categories (simple grouping)
+  const skillCategories = [
+    {
+      icon: Code,
+      title: "Technologies & Skills",
+      skills: skills,
+    },
+  ];
+
   return (
     <section id="skills" className="py-24">
       <div className="max-w-6xl mx-auto px-6">
@@ -53,28 +46,20 @@ export function Skills() {
         <ScrollReveal delay={400}>
           <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="text-3xl font-bold text-primary mb-2" data-testid="text-years-experience">
-                3+
-              </div>
-              <div className="text-muted-foreground text-sm">Years Experience</div>
+              <div className="text-3xl font-bold text-primary mb-2">3+</div>
+              <div className="text-muted-foreground">Years Experience</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-primary mb-2" data-testid="text-projects-completed">
-                50+
-              </div>
-              <div className="text-muted-foreground text-sm">Projects Completed</div>
+              <div className="text-3xl font-bold text-primary mb-2">50+</div>
+              <div className="text-muted-foreground">Projects Completed</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-primary mb-2" data-testid="text-technologies">
-                15+
-              </div>
-              <div className="text-muted-foreground text-sm">Technologies</div>
+              <div className="text-3xl font-bold text-primary mb-2">20+</div>
+              <div className="text-muted-foreground">Technologies</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-primary mb-2" data-testid="text-coffee-cups">
-                1000+
-              </div>
-              <div className="text-muted-foreground text-sm">Cups of Coffee</div>
+              <div className="text-3xl font-bold text-primary mb-2">100%</div>
+              <div className="text-muted-foreground">Client Satisfaction</div>
             </div>
           </div>
         </ScrollReveal>

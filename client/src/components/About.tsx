@@ -2,8 +2,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Download, MapPin, Calendar } from "lucide-react";
 import { ScrollReveal } from "@/components/ScrollReveal";
+import { useQuery } from "@tanstack/react-query";
 
 export function About() {
+  const { data: portfolioData } = useQuery({
+    queryKey: ["/api/portfolio"],
+  });
+
   const scrollToContact = () => {
     document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
   };
@@ -40,25 +45,12 @@ export function About() {
           <ScrollReveal direction="right" delay={200}>
             <div>
             <h3 className="text-2xl font-semibold mb-6 text-foreground">
-              Passionate Full Stack Developer
+              {portfolioData?.role || "Full Stack Developer"}
             </h3>
             
             <div className="space-y-4 text-muted-foreground leading-relaxed mb-8">
               <p>
-                I'm a dedicated full stack developer with a passion for creating innovative web applications 
-                that solve real-world problems. With over 3 years of experience in modern web technologies, 
-                I specialize in building scalable, user-friendly applications.
-              </p>
-              
-              <p>
-                My journey began with a curiosity for how things work on the web. Today, I work with cutting-edge 
-                technologies like React, Node.js, and TypeScript to bring ideas to life. I believe in writing 
-                clean, maintainable code and creating exceptional user experiences.
-              </p>
-              
-              <p>
-                When I'm not coding, you'll find me exploring new technologies, contributing to open source 
-                projects, or sharing knowledge with the developer community.
+                {portfolioData?.bio || "Passionate developer creating innovative web applications that solve real-world problems. I believe in writing clean, maintainable code and creating exceptional user experiences."}
               </p>
             </div>
 
@@ -69,7 +61,7 @@ export function About() {
                   <MapPin className="h-5 w-5 text-primary" />
                   <div>
                     <div className="text-sm text-muted-foreground">Location</div>
-                    <div className="font-medium" data-testid="text-location">San Francisco, CA</div>
+                    <div className="font-medium" data-testid="text-location">{portfolioData?.location || "Remote"}</div>
                   </div>
                 </CardContent>
               </Card>
