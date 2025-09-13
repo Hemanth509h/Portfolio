@@ -5,7 +5,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "@/pages/Home";
 import Admin from "@/pages/Admin";
-import AdminLogin from "@/pages/AdminLogin";
 import NotFound from "@/pages/not-found";
 import { useEffect } from "react";
 
@@ -14,7 +13,6 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/admin" component={Admin} />
-      <Route path="/admin/login" component={AdminLogin} />
       <Route component={NotFound} />
     </Switch>
   );
