@@ -11,7 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { Badge } from "@/components/ui/badge";
-import { Save, X, Lock, Unlock } from "lucide-react";
+import { Save, X, Lock, Unlock, Code, Eye, EyeOff } from "lucide-react";
 
 const portfolioSchema = z.object({
   name: z.string().min(1, "Name is required").max(100, "Name too long"),
@@ -34,6 +34,7 @@ export default function Admin() {
   const [adminCode, setAdminCode] = useState("");
   const [codeInput, setCodeInput] = useState("");
   const [skillInput, setSkillInput] = useState("");
+  const [showProjectPreview, setShowProjectPreview] = useState(false);
   const [isUnlocked, setIsUnlocked] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -191,6 +192,47 @@ export default function Admin() {
     if (e.key === "Enter") {
       e.preventDefault();
       addSkill();
+    }
+  };
+
+  const formatProjectsJSON = () => {
+    try {
+      const currentProjects = form.getValues("projects");
+      const parsed = JSON.parse(currentProjects || '[]');
+      const formatted = JSON.stringify(parsed, null, 2);
+      form.setValue("projects", formatted);
+      toast({
+        title: "JSON formatted",
+        description: "Projects JSON has been formatted successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Invalid JSON",
+        description: "Please check your JSON syntax and try again",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const validateProjectsJSON = (jsonString: string) => {
+    if (!jsonString.trim()) return [];
+    try {
+      const parsed = JSON.parse(jsonString);
+      if (!Array.isArray(parsed)) {
+        throw new Error('Projects must be an array');
+      }
+      return parsed;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const getProjectsPreview = () => {
+    try {
+      const projects = validateProjectsJSON(form.watch("projects") || '[]');
+      return projects;
+    } catch (error) {
+      return [];
     }
   };
 
@@ -463,12 +505,37 @@ export default function Admin() {
             {/* Projects */}
             <Card>
               <CardHeader>
-                <CardTitle>Projects (JSON)</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  Projects 
+                  <div className="flex gap-2 ml-auto">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={formatProjectsJSON}
+                      disabled={!isUnlocked}
+                      data-testid="button-format-json"
+                    >
+                      <Code className="w-4 h-4 mr-1" />
+                      Format JSON
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowProjectPreview(!showProjectPreview)}
+                      data-testid="button-toggle-preview"
+                    >
+                      {showProjectPreview ? <EyeOff className="w-4 h-4 mr-1" /> : <Eye className="w-4 h-4 mr-1" />}
+                      {showProjectPreview ? 'Hide Preview' : 'Show Preview'}
+                    </Button>
+                  </div>
+                </CardTitle>
                 <CardDescription>
-                  Project data in JSON format. Each project should have: id, title, description, technologies, githubUrl, liveUrl, imageUrl
+                  Manage your projects in JSON format. Each project should include: id, title, description, technologies (array), githubUrl, liveUrl, imageUrl (optional)
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="space-y-4">
                 <FormField
                   control={form.control}
                   name="projects"
@@ -478,16 +545,64 @@ export default function Admin() {
                       <FormControl>
                         <Textarea
                           {...field}
-                          placeholder='[{"id": "1", "title": "Project Name", "description": "Project description", "technologies": ["React", "TypeScript"], "githubUrl": "", "liveUrl": "", "imageUrl": ""}]'
-                          className="min-h-[200px] font-mono text-sm"
+                          placeholder={JSON.stringify([
+                            {
+                              "id": "1",
+                              "title": "My Awesome Project",
+                              "description": "A detailed description of what this project does and the problems it solves.",
+                              "technologies": ["React", "TypeScript", "Node.js"],
+                              "githubUrl": "https://github.com/username/project",
+                              "liveUrl": "https://myproject.com",
+                              "imageUrl": "https://images.unsplash.com/photo-1234567890123"
+                            }
+                          ], null, 2)}
+                          className="min-h-[250px] font-mono text-sm"
                           disabled={!isUnlocked}
                           data-testid="input-projects"
                         />
                       </FormControl>
                       <FormMessage />
+                      <div className="text-xs text-muted-foreground mt-2">
+                        💡 Tips: Use the "Format JSON" button to properly format your JSON. All fields except imageUrl are required.
+                      </div>
                     </FormItem>
                   )}
                 />
+                
+                {/* Project Preview */}
+                {showProjectPreview && (
+                  <div className="mt-4">
+                    <h4 className="font-medium mb-3 text-sm">Projects Preview ({getProjectsPreview().length} projects)</h4>
+                    <div className="max-h-60 overflow-y-auto space-y-2 border rounded-lg p-3 bg-muted/30">
+                      {getProjectsPreview().length > 0 ? (
+                        getProjectsPreview().map((project: any, index: number) => (
+                          <div key={index} className="text-xs bg-background rounded p-2 border">
+                            <div className="font-medium truncate">{project.title || 'Untitled'}</div>
+                            <div className="text-muted-foreground truncate mt-1">
+                              {project.description || 'No description'}
+                            </div>
+                            {project.technologies && project.technologies.length > 0 && (
+                              <div className="flex flex-wrap gap-1 mt-1">
+                                {project.technologies.slice(0, 3).map((tech: string, techIndex: number) => (
+                                  <span key={techIndex} className="bg-primary/10 text-primary px-1 rounded text-xs">
+                                    {tech}
+                                  </span>
+                                ))}
+                                {project.technologies.length > 3 && (
+                                  <span className="text-muted-foreground text-xs">+{project.technologies.length - 3} more</span>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        ))
+                      ) : (
+                        <div className="text-xs text-muted-foreground text-center py-4">
+                          No valid projects found. Check your JSON format above.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
