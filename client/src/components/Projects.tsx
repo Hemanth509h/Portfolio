@@ -3,10 +3,25 @@ import { ProjectCard } from "./ProjectCard";
 import { ProjectFilter } from "./ProjectFilter";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { type PortfolioData } from "@shared/schema";
 
-// Mock project data - todo: replace with real project data
-const projects = [
+// Define the project interface
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  image?: string;
+  technologies: string[];
+  liveUrl?: string;
+  githubUrl?: string;
+  featured?: boolean;
+}
+
+// Fallback projects in case no projects are loaded from admin
+const fallbackProjects: Project[] = [
   {
+    id: "1",
     title: "E-Commerce Platform",
     description: "A full-stack e-commerce solution with React, Node.js, and Stripe integration. Features include user authentication, product management, shopping cart, and secure payments.",
     image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop",
@@ -15,59 +30,39 @@ const projects = [
     githubUrl: "https://github.com",
     featured: true,
   },
-  {
-    title: "Task Management App",
-    description: "A collaborative project management tool with real-time updates, drag-and-drop functionality, and team collaboration features.",
-    image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=600&h=400&fit=crop",
-    technologies: ["React", "Socket.io", "Express", "MongoDB", "Zustand"],
-    liveUrl: "https://example.com",
-    githubUrl: "https://github.com",
-  },
-  {
-    title: "Weather Dashboard",
-    description: "A responsive weather application with location-based forecasts, interactive maps, and detailed weather analytics.",
-    image: "https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?w=600&h=400&fit=crop",
-    technologies: ["React", "TypeScript", "OpenWeather API", "Chart.js"],
-    liveUrl: "https://example.com",
-    githubUrl: "https://github.com",
-  },
-  {
-    title: "Social Media Dashboard",
-    description: "An analytics dashboard for social media management with data visualization, scheduling, and performance tracking.",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
-    technologies: ["Next.js", "Prisma", "PostgreSQL", "Recharts", "OAuth"],
-    liveUrl: "https://example.com",
-    githubUrl: "https://github.com",
-  },
-  {
-    title: "AI Content Generator",
-    description: "An intelligent content generation tool using machine learning to create blog posts, social media content, and marketing copy.",
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&h=400&fit=crop",
-    technologies: ["Python", "FastAPI", "OpenAI API", "React", "Redis"],
-    liveUrl: "https://example.com",
-    githubUrl: "https://github.com",
-  },
-  {
-    title: "Real-time Chat Platform",
-    description: "A scalable chat application with real-time messaging, file sharing, voice calls, and team collaboration features.",
-    image: "https://images.unsplash.com/photo-1611606063065-ee7946f0787a?w=600&h=400&fit=crop",
-    technologies: ["Vue.js", "Socket.io", "Node.js", "Redis", "WebRTC"],
-    liveUrl: "https://example.com",
-    githubUrl: "https://github.com",
-  },
 ];
 
 export function Projects() {
+  const { data: portfolioData } = useQuery<PortfolioData>({
+    queryKey: ["/api/portfolio"],
+  });
+  
   const [selectedTechnologies, setSelectedTechnologies] = useState<string[]>([]);
+  
+  // Parse projects from JSON string or use fallback
+  const projects = useMemo(() => {
+    if (portfolioData?.projects) {
+      try {
+        const parsedProjects = JSON.parse(portfolioData.projects);
+        return Array.isArray(parsedProjects) && parsedProjects.length > 0 
+          ? parsedProjects 
+          : fallbackProjects;
+      } catch (error) {
+        console.error('Error parsing projects JSON:', error);
+        return fallbackProjects;
+      }
+    }
+    return fallbackProjects;
+  }, [portfolioData?.projects]);
 
   // Get all unique technologies from projects
   const allTechnologies = useMemo(() => {
     const techSet = new Set<string>();
-    projects.forEach(project => {
-      project.technologies.forEach(tech => techSet.add(tech));
+    projects.forEach((project: Project) => {
+      project.technologies.forEach((tech: string) => techSet.add(tech));
     });
     return Array.from(techSet).sort();
-  }, []);
+  }, [projects]);
 
   // Filter projects based on selected technologies
   const filteredProjects = useMemo(() => {
@@ -103,7 +98,7 @@ export function Projects() {
           {filteredProjects.length > 0 ? (
             filteredProjects.map((project, index) => (
               <div
-                key={project.title}
+                key={project.id || project.title}
                 className="animate-in fade-in slide-in-from-bottom-4 duration-500"
                 style={{ animationDelay: `${index * 100}ms` }}
               >

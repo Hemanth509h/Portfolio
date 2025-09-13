@@ -1,7 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Github, Linkedin, Mail, Heart } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { type PortfolioData } from "@shared/schema";
 
 export function Footer() {
+  const { data: portfolioData } = useQuery<PortfolioData>({
+    queryKey: ["/api/portfolio"],
+  });
   const currentYear = new Date().getFullYear();
 
   return (
@@ -11,11 +16,10 @@ export function Footer() {
           {/* Brand */}
           <div>
             <div className="font-semibold text-xl text-primary mb-4">
-              Alex Developer
+              {portfolioData?.name || "Alex Developer"}
             </div>
             <p className="text-muted-foreground text-sm leading-relaxed">
-              Full stack developer passionate about creating exceptional digital experiences 
-              with modern technologies and clean code.
+              {portfolioData?.bio || "Full stack developer passionate about creating exceptional digital experiences with modern technologies and clean code."}
             </p>
           </div>
 
@@ -47,7 +51,7 @@ export function Footer() {
                 variant="ghost"
                 size="icon"
                 data-testid="link-footer-github"
-                onClick={() => console.log("Footer GitHub clicked")}
+                onClick={() => portfolioData?.githubUrl ? window.open(portfolioData.githubUrl, '_blank') : console.log("Footer GitHub clicked")}
               >
                 <Github className="h-4 w-4" />
               </Button>
@@ -55,7 +59,7 @@ export function Footer() {
                 variant="ghost"
                 size="icon"
                 data-testid="link-footer-linkedin"
-                onClick={() => console.log("Footer LinkedIn clicked")}
+                onClick={() => portfolioData?.linkedinUrl ? window.open(portfolioData.linkedinUrl, '_blank') : console.log("Footer LinkedIn clicked")}
               >
                 <Linkedin className="h-4 w-4" />
               </Button>
@@ -63,22 +67,22 @@ export function Footer() {
                 variant="ghost"
                 size="icon"
                 data-testid="link-footer-email"
-                onClick={() => console.log("Footer Email clicked")}
+                onClick={() => portfolioData?.email ? window.open(`mailto:${portfolioData.email}`) : console.log("Footer Email clicked")}
               >
                 <Mail className="h-4 w-4" />
               </Button>
             </div>
             <p className="text-muted-foreground text-sm">
-              alex@example.com
+              {portfolioData?.email || "alex@example.com"}
               <br />
-              San Francisco, CA
+              {portfolioData?.location || "San Francisco, CA"}
             </p>
           </div>
         </div>
 
         <div className="border-t border-border mt-8 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
           <div className="flex items-center">
-            <span>© {currentYear} Alex Developer. Made with</span>
+            <span>© {currentYear} {portfolioData?.name || "Alex Developer"}. Made with</span>
             <Heart className="h-4 w-4 mx-1 text-red-500 fill-current" />
             <span>and lots of coffee.</span>
           </div>

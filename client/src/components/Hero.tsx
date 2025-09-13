@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Github, Linkedin, Mail, Download } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { type PortfolioData } from "@shared/schema";
 import heroImage from "@assets/generated_images/Developer_workspace_hero_image_546a984f.png";
 
 const roles = ["Full Stack Developer", "React Specialist", "Node.js Expert", "UI/UX Enthusiast"];
 
 export function Hero() {
+  const { data: portfolioData } = useQuery<PortfolioData>({
+    queryKey: ["/api/portfolio"],
+  });
+  
   const [currentRole, setCurrentRole] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [isTyping, setIsTyping] = useState(true);
@@ -61,7 +67,7 @@ export function Hero() {
         <div className="max-w-3xl">
           <h1 className="text-5xl md:text-7xl font-bold mb-6">
             <span className="text-foreground">Hi, I'm</span>{" "}
-            <span className="text-primary">Alex</span>
+            <span className="text-primary">{portfolioData?.name || "Alex"}</span>
           </h1>
           
           <div className="h-16 mb-8">
@@ -72,8 +78,7 @@ export function Hero() {
           </div>
 
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl leading-relaxed">
-            I create modern, scalable web applications with clean code and exceptional user experiences. 
-            Passionate about building digital solutions that make a difference.
+            {portfolioData?.bio || "I create modern, scalable web applications with clean code and exceptional user experiences. Passionate about building digital solutions that make a difference."}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 mb-12">
@@ -103,7 +108,7 @@ export function Hero() {
               size="icon"
               data-testid="link-github"
               className="hover-elevate"
-              onClick={() => console.log("GitHub clicked")}
+              onClick={() => portfolioData?.githubUrl ? window.open(portfolioData.githubUrl, '_blank') : console.log("GitHub clicked")}
             >
               <Github className="h-5 w-5" />
             </Button>
@@ -112,7 +117,7 @@ export function Hero() {
               size="icon"
               data-testid="link-linkedin"
               className="hover-elevate"
-              onClick={() => console.log("LinkedIn clicked")}
+              onClick={() => portfolioData?.linkedinUrl ? window.open(portfolioData.linkedinUrl, '_blank') : console.log("LinkedIn clicked")}
             >
               <Linkedin className="h-5 w-5" />
             </Button>
@@ -121,7 +126,7 @@ export function Hero() {
               size="icon"
               data-testid="link-email"
               className="hover-elevate"
-              onClick={() => console.log("Email clicked")}
+              onClick={() => portfolioData?.email ? window.open(`mailto:${portfolioData.email}`) : console.log("Email clicked")}
             >
               <Mail className="h-5 w-5" />
             </Button>
@@ -130,7 +135,7 @@ export function Hero() {
               size="sm"
               data-testid="button-download-resume"
               className="hover-elevate ml-4"
-              onClick={() => console.log("Resume download clicked")}
+              onClick={() => portfolioData?.resumeUrl ? window.open(portfolioData.resumeUrl, '_blank') : console.log("Resume download clicked")}
             >
               <Download className="h-4 w-4 mr-2" />
               Resume
