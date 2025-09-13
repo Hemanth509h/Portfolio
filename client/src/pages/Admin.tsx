@@ -11,7 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { Badge } from "@/components/ui/badge";
-import { Save, X, Lock, Unlock, Code, Eye, EyeOff } from "lucide-react";
+import { Save, X, Lock, Unlock, Code, Eye, EyeOff, Plus, Trash2, Zap } from "lucide-react";
 
 const portfolioSchema = z.object({
   name: z.string().min(1, "Name is required").max(100, "Name too long"),
@@ -39,6 +39,8 @@ export default function Admin() {
   const [showProjectPreview, setShowProjectPreview] = useState(false);
   const [showWorkExperiencePreview, setShowWorkExperiencePreview] = useState(false);
   const [showEducationPreview, setShowEducationPreview] = useState(false);
+  const [showSkillSuggestions, setShowSkillSuggestions] = useState(false);
+  const [showSkillPreview, setShowSkillPreview] = useState(false);
   const [isUnlocked, setIsUnlocked] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -326,6 +328,77 @@ export default function Admin() {
     } catch (error) {
       return [];
     }
+  };
+
+  // Skills Helper Functions and Suggestions
+  const skillSuggestions = {
+    "Frontend": [
+      "React", "Vue.js", "Angular", "TypeScript", "JavaScript", "HTML5", "CSS3", 
+      "Tailwind CSS", "Bootstrap", "Sass", "Next.js", "Nuxt.js", "Svelte"
+    ],
+    "Backend": [
+      "Node.js", "Express.js", "Python", "Django", "Flask", "Java", "Spring Boot",
+      "PHP", "Laravel", "Ruby", "Rails", "C#", ".NET", "Go", "Rust"
+    ],
+    "Databases": [
+      "PostgreSQL", "MySQL", "MongoDB", "Redis", "SQLite", "Firebase", 
+      "Supabase", "DynamoDB", "Elasticsearch", "Oracle"
+    ],
+    "Cloud & DevOps": [
+      "AWS", "Google Cloud", "Azure", "Docker", "Kubernetes", "Jenkins", 
+      "GitLab CI", "GitHub Actions", "Terraform", "Ansible"
+    ],
+    "Mobile": [
+      "React Native", "Flutter", "Swift", "Kotlin", "Ionic", "Xamarin", "Unity"
+    ],
+    "Tools & Others": [
+      "Git", "Linux", "Figma", "Photoshop", "Webpack", "Vite", "Jest", 
+      "Cypress", "GraphQL", "REST APIs", "Microservices", "Agile", "Scrum"
+    ]
+  };
+
+  const addSuggestedSkill = (skill: string) => {
+    const currentSkills = form.getValues("skills");
+    if (!currentSkills.includes(skill)) {
+      form.setValue("skills", [...currentSkills, skill]);
+      toast({
+        title: "Skill added",
+        description: `${skill} has been added to your skills`,
+      });
+    }
+  };
+
+  const addSkillCategory = (category: string) => {
+    const currentSkills = form.getValues("skills");
+    const categorySkills = skillSuggestions[category as keyof typeof skillSuggestions] || [];
+    const newSkills = categorySkills.filter(skill => !currentSkills.includes(skill));
+    
+    if (newSkills.length > 0) {
+      form.setValue("skills", [...currentSkills, ...newSkills]);
+      toast({
+        title: "Skills added",
+        description: `Added ${newSkills.length} skills from ${category} category`,
+      });
+    } else {
+      toast({
+        title: "No new skills",
+        description: `All ${category} skills are already in your list`,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const clearAllSkills = () => {
+    form.setValue("skills", []);
+    toast({
+      title: "Skills cleared",
+      description: "All skills have been removed",
+    });
+  };
+
+  const getSkillsPreview = () => {
+    const skills = form.watch("skills") || [];
+    return skills;
   };
 
   if (isLoadingData) {
