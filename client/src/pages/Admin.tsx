@@ -81,20 +81,20 @@ export default function Admin() {
 
   // Update form when data is loaded
   useEffect(() => {
-    if (portfolioData) {
+    if (portfolioData && typeof portfolioData === 'object') {
       form.reset({
-        name: portfolioData.name || "",
-        role: portfolioData.role || "",
-        bio: portfolioData.bio || "",
-        email: portfolioData.email || "",
-        phone: portfolioData.phone || "",
-        location: portfolioData.location || "",
-        githubUrl: portfolioData.githubUrl || "",
-        linkedinUrl: portfolioData.linkedinUrl || "",
-        websiteUrl: portfolioData.websiteUrl || "",
-        resumeUrl: portfolioData.resumeUrl || "",
-        skills: portfolioData.skills || [],
-        projects: portfolioData.projects || "[]",
+        name: (portfolioData as any).name || "",
+        role: (portfolioData as any).role || "",
+        bio: (portfolioData as any).bio || "",
+        email: (portfolioData as any).email || "",
+        phone: (portfolioData as any).phone || "",
+        location: (portfolioData as any).location || "",
+        githubUrl: (portfolioData as any).githubUrl || "",
+        linkedinUrl: (portfolioData as any).linkedinUrl || "",
+        websiteUrl: (portfolioData as any).websiteUrl || "",
+        resumeUrl: (portfolioData as any).resumeUrl || "",
+        skills: (portfolioData as any).skills || [],
+        projects: (portfolioData as any).projects || "[]",
       });
     }
   }, [portfolioData, form]);
