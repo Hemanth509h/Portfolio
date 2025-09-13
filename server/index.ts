@@ -63,7 +63,7 @@ app.use((req, res, next) => {
   const port = parseInt(process.env.PORT || '5000', 10);
   const isWindows = process.platform === 'win32';
   const isDevelopment = process.env.NODE_ENV === 'development';
-  const host = process.env.HOST ?? (isDevelopment ? (isWindows ? '127.0.0.1' : 'localhost') : '0.0.0.0');
+  const host = process.env.HOST ?? '0.0.0.0';
   
   const listenOptions: any = { port, host };
   if (!isWindows) {

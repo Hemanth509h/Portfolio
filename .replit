@@ -13,10 +13,9 @@ run = ["npm", "run", "start"]
 [[ports]]
 localPort = 5000
 externalPort = 80
-exposeLocalhost = true
 
 [[ports]]
-localPort = 38233
+localPort = 41479
 externalPort = 3000
 
 [env]
@@ -42,6 +41,9 @@ author = "agent"
 task = "shell.exec"
 args = "npm run dev"
 waitForPort = 5000
+
+[workflows.workflow.metadata]
+outputType = "webview"
 
 [agent]
 expertMode = true
