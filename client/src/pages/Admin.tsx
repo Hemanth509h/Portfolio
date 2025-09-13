@@ -26,6 +26,8 @@ const portfolioSchema = z.object({
   resumeUrl: z.string().url("Invalid resume URL").optional().or(z.literal("")),
   skills: z.array(z.string()).default([]),
   projects: z.string().default('[]'),
+  workExperience: z.string().default('[]'),
+  education: z.string().default('[]'),
 });
 
 type PortfolioForm = z.infer<typeof portfolioSchema>;
@@ -35,6 +37,8 @@ export default function Admin() {
   const [codeInput, setCodeInput] = useState("");
   const [skillInput, setSkillInput] = useState("");
   const [showProjectPreview, setShowProjectPreview] = useState(false);
+  const [showWorkExperiencePreview, setShowWorkExperiencePreview] = useState(false);
+  const [showEducationPreview, setShowEducationPreview] = useState(false);
   const [isUnlocked, setIsUnlocked] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -77,6 +81,8 @@ export default function Admin() {
       resumeUrl: "",
       skills: [],
       projects: "[]",
+      workExperience: "[]",
+      education: "[]",
     },
   });
 
@@ -96,6 +102,8 @@ export default function Admin() {
         resumeUrl: (portfolioData as any).resumeUrl || "",
         skills: (portfolioData as any).skills || [],
         projects: (portfolioData as any).projects || "[]",
+        workExperience: (portfolioData as any).workExperience || "[]",
+        education: (portfolioData as any).education || "[]",
       });
     }
   }, [portfolioData, form]);
@@ -231,6 +239,90 @@ export default function Admin() {
     try {
       const projects = validateProjectsJSON(form.watch("projects") || '[]');
       return projects;
+    } catch (error) {
+      return [];
+    }
+  };
+
+  // Work Experience Helper Functions
+  const formatWorkExperienceJSON = () => {
+    try {
+      const currentWorkExperience = form.getValues("workExperience");
+      const parsed = JSON.parse(currentWorkExperience || '[]');
+      const formatted = JSON.stringify(parsed, null, 2);
+      form.setValue("workExperience", formatted);
+      toast({
+        title: "JSON formatted",
+        description: "Work experience JSON has been formatted successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Invalid JSON",
+        description: "Please check your JSON syntax and try again",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const validateWorkExperienceJSON = (jsonString: string) => {
+    if (!jsonString.trim()) return [];
+    try {
+      const parsed = JSON.parse(jsonString);
+      if (!Array.isArray(parsed)) {
+        throw new Error('Work experience must be an array');
+      }
+      return parsed;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const getWorkExperiencePreview = () => {
+    try {
+      const workExperience = validateWorkExperienceJSON(form.watch("workExperience") || '[]');
+      return workExperience;
+    } catch (error) {
+      return [];
+    }
+  };
+
+  // Education Helper Functions
+  const formatEducationJSON = () => {
+    try {
+      const currentEducation = form.getValues("education");
+      const parsed = JSON.parse(currentEducation || '[]');
+      const formatted = JSON.stringify(parsed, null, 2);
+      form.setValue("education", formatted);
+      toast({
+        title: "JSON formatted",
+        description: "Education JSON has been formatted successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Invalid JSON",
+        description: "Please check your JSON syntax and try again",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const validateEducationJSON = (jsonString: string) => {
+    if (!jsonString.trim()) return [];
+    try {
+      const parsed = JSON.parse(jsonString);
+      if (!Array.isArray(parsed)) {
+        throw new Error('Education must be an array');
+      }
+      return parsed;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const getEducationPreview = () => {
+    try {
+      const education = validateEducationJSON(form.watch("education") || '[]');
+      return education;
     } catch (error) {
       return [];
     }
@@ -598,6 +690,205 @@ export default function Admin() {
                       ) : (
                         <div className="text-xs text-muted-foreground text-center py-4">
                           No valid projects found. Check your JSON format above.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Work Experience */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  Work Experience
+                  <div className="flex gap-2 ml-auto">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={formatWorkExperienceJSON}
+                      disabled={!isUnlocked}
+                      data-testid="button-format-work-experience-json"
+                    >
+                      <Code className="w-4 h-4 mr-1" />
+                      Format JSON
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowWorkExperiencePreview(!showWorkExperiencePreview)}
+                      data-testid="button-toggle-work-experience-preview"
+                    >
+                      {showWorkExperiencePreview ? <EyeOff className="w-4 h-4 mr-1" /> : <Eye className="w-4 h-4 mr-1" />}
+                      {showWorkExperiencePreview ? 'Hide Preview' : 'Show Preview'}
+                    </Button>
+                  </div>
+                </CardTitle>
+                <CardDescription>
+                  Manage your work experience in JSON format. Each entry should include: id, company, position, startDate, endDate, description, location (optional)
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="workExperience"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Work Experience JSON</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          {...field}
+                          placeholder={JSON.stringify([
+                            {
+                              "id": "1",
+                              "company": "Tech Company Inc.",
+                              "position": "Senior Software Engineer",
+                              "startDate": "2022-01",
+                              "endDate": "present",
+                              "description": "Led development of scalable web applications using React and Node.js. Mentored junior developers and improved team productivity by 30%.",
+                              "location": "San Francisco, CA"
+                            }
+                          ], null, 2)}
+                          className="min-h-[250px] font-mono text-sm"
+                          disabled={!isUnlocked}
+                          data-testid="input-work-experience"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                      <div className="text-xs text-muted-foreground mt-2">
+                        💡 Tips: Use "present" for current positions. All fields except location are required.
+                      </div>
+                    </FormItem>
+                  )}
+                />
+                
+                {/* Work Experience Preview */}
+                {showWorkExperiencePreview && (
+                  <div className="mt-4">
+                    <h4 className="font-medium mb-3 text-sm">Work Experience Preview ({getWorkExperiencePreview().length} positions)</h4>
+                    <div className="max-h-60 overflow-y-auto space-y-2 border rounded-lg p-3 bg-muted/30">
+                      {getWorkExperiencePreview().length > 0 ? (
+                        getWorkExperiencePreview().map((job: any, index: number) => (
+                          <div key={index} className="text-xs bg-background rounded p-2 border">
+                            <div className="font-medium truncate">{job.position || 'Untitled Position'}</div>
+                            <div className="text-muted-foreground truncate">{job.company || 'Unknown Company'}</div>
+                            <div className="text-xs text-muted-foreground mt-1">
+                              {job.startDate || 'Unknown start'} - {job.endDate || 'Unknown end'}
+                              {job.location && ` • ${job.location}`}
+                            </div>
+                            {job.description && (
+                              <div className="text-xs text-muted-foreground mt-1 truncate">
+                                {job.description.slice(0, 100)}...
+                              </div>
+                            )}
+                          </div>
+                        ))
+                      ) : (
+                        <div className="text-xs text-muted-foreground text-center py-4">
+                          No valid work experience found. Check your JSON format above.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Education */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  Education
+                  <div className="flex gap-2 ml-auto">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={formatEducationJSON}
+                      disabled={!isUnlocked}
+                      data-testid="button-format-education-json"
+                    >
+                      <Code className="w-4 h-4 mr-1" />
+                      Format JSON
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowEducationPreview(!showEducationPreview)}
+                      data-testid="button-toggle-education-preview"
+                    >
+                      {showEducationPreview ? <EyeOff className="w-4 h-4 mr-1" /> : <Eye className="w-4 h-4 mr-1" />}
+                      {showEducationPreview ? 'Hide Preview' : 'Show Preview'}
+                    </Button>
+                  </div>
+                </CardTitle>
+                <CardDescription>
+                  Manage your education in JSON format. Each entry should include: id, institution, degree, field, startDate, endDate, description (optional)
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="education"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Education JSON</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          {...field}
+                          placeholder={JSON.stringify([
+                            {
+                              "id": "1",
+                              "institution": "University of Technology",
+                              "degree": "Bachelor of Science",
+                              "field": "Computer Science",
+                              "startDate": "2018",
+                              "endDate": "2022",
+                              "description": "Focused on software engineering and data structures. Graduated magna cum laude."
+                            }
+                          ], null, 2)}
+                          className="min-h-[250px] font-mono text-sm"
+                          disabled={!isUnlocked}
+                          data-testid="input-education"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                      <div className="text-xs text-muted-foreground mt-2">
+                        💡 Tips: Use years for dates (e.g., "2022"). Description field is optional.
+                      </div>
+                    </FormItem>
+                  )}
+                />
+                
+                {/* Education Preview */}
+                {showEducationPreview && (
+                  <div className="mt-4">
+                    <h4 className="font-medium mb-3 text-sm">Education Preview ({getEducationPreview().length} entries)</h4>
+                    <div className="max-h-60 overflow-y-auto space-y-2 border rounded-lg p-3 bg-muted/30">
+                      {getEducationPreview().length > 0 ? (
+                        getEducationPreview().map((education: any, index: number) => (
+                          <div key={index} className="text-xs bg-background rounded p-2 border">
+                            <div className="font-medium truncate">{education.degree || 'Unknown Degree'}</div>
+                            <div className="text-muted-foreground truncate">
+                              {education.field || 'Unknown Field'} • {education.institution || 'Unknown Institution'}
+                            </div>
+                            <div className="text-xs text-muted-foreground mt-1">
+                              {education.startDate || 'Unknown start'} - {education.endDate || 'Unknown end'}
+                            </div>
+                            {education.description && (
+                              <div className="text-xs text-muted-foreground mt-1 truncate">
+                                {education.description.slice(0, 100)}...
+                              </div>
+                            )}
+                          </div>
+                        ))
+                      ) : (
+                        <div className="text-xs text-muted-foreground text-center py-4">
+                          No valid education found. Check your JSON format above.
                         </div>
                       )}
                     </div>

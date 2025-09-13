@@ -84,6 +84,8 @@ export class MemStorage implements IStorage {
       resumeUrl: insertData.resumeUrl || null,
       skills: insertData.skills,
       projects: insertData.projects,
+      workExperience: insertData.workExperience,
+      education: insertData.education,
       updatedAt: new Date()
     };
     this.portfolioData = updatedData;
@@ -116,6 +118,8 @@ export class MemStorage implements IStorage {
           imageUrl: ""
         }
       ]),
+      workExperience: JSON.stringify([]),
+      education: JSON.stringify([]),
       updatedAt: new Date()
     };
     this.portfolioData = initialData;

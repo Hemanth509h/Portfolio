@@ -32,6 +32,8 @@ export const portfolioData = pgTable("portfolio_data", {
   resumeUrl: text("resume_url"),
   skills: text("skills").array().notNull().default([]),
   projects: text("projects").notNull().default('[]'), // JSON string for project data
+  workExperience: text("work_experience").notNull().default('[]'), // JSON string for work experience data
+  education: text("education").notNull().default('[]'), // JSON string for education data
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
@@ -84,6 +86,8 @@ export const insertPortfolioDataSchema = createInsertSchema(portfolioData)
     resumeUrl: true,
     skills: true,
     projects: true,
+    workExperience: true,
+    education: true,
   })
   .extend({
     name: z.string().min(1, "Name is required").max(100, "Name too long"),
@@ -98,6 +102,8 @@ export const insertPortfolioDataSchema = createInsertSchema(portfolioData)
     resumeUrl: z.string().url("Invalid resume URL").optional().or(z.literal("")),
     skills: z.array(z.string()).default([]),
     projects: z.string().default('[]'),
+    workExperience: z.string().default('[]'),
+    education: z.string().default('[]'),
   });
 
 export const loginSchema = z.object({
