@@ -5,8 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 import { type PortfolioData } from "@shared/schema";
 import heroImage from "@assets/generated_images/Developer_workspace_hero_image_546a984f.png";
 
-const roles = ["Full Stack Developer", "React Specialist", "Node.js Expert", "UI/UX Enthusiast"];
-
 export function Hero() {
   const { data: portfolioData } = useQuery<PortfolioData>({
     queryKey: ["/api/portfolio"],
@@ -15,6 +13,11 @@ export function Hero() {
   const [currentRole, setCurrentRole] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [isTyping, setIsTyping] = useState(true);
+
+  // Use skills from portfolio data for typewriter effect, with fallback to default roles
+  const roles = portfolioData?.skills && portfolioData.skills.length > 0 
+    ? portfolioData.skills 
+    : ["Full Stack Developer", "React Specialist", "Node.js Expert", "UI/UX Enthusiast"];
 
   useEffect(() => {
     const role = roles[currentRole];
