@@ -26,12 +26,15 @@ export function Hero() {
   const pauseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const nextRoleTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Reset currentRole if it's out of bounds when roles change
+  // Reset typewriter state when roles array changes (like when skills are updated)
   useEffect(() => {
-    if (currentRole >= roles.length && roles.length > 0) {
+    if (roles.length > 0) {
+      // Reset to first role and restart typing animation
       setCurrentRole(0);
+      setDisplayText("");
+      setIsTyping(true);
     }
-  }, [roles.length, currentRole]);
+  }, [roles]); // Depend on the entire roles array, not just length
 
   useEffect(() => {
     // Clear any existing timeouts
