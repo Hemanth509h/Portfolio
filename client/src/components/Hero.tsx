@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Github, Linkedin, Mail, Download } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
@@ -15,12 +15,38 @@ export function Hero() {
   const [isTyping, setIsTyping] = useState(true);
 
   // Use skills from portfolio data for typewriter effect, with fallback to default roles
-  const roles = portfolioData?.skills && portfolioData.skills.length > 0 
-    ? portfolioData.skills 
-    : ["Full Stack Developer", "React Specialist", "Node.js Expert", "UI/UX Enthusiast"];
+  const roles = useMemo(() => {
+    const defaultRoles = ["Full Stack Developer", "React Specialist", "Node.js Expert", "UI/UX Enthusiast"];
+    return portfolioData?.skills && portfolioData.skills.length > 0 
+      ? portfolioData.skills 
+      : defaultRoles;
+  }, [portfolioData?.skills]);
+
+  // Refs for cleanup
+  const pauseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const nextRoleTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Reset currentRole if it's out of bounds when roles change
+  useEffect(() => {
+    if (currentRole >= roles.length && roles.length > 0) {
+      setCurrentRole(0);
+    }
+  }, [roles.length, currentRole]);
 
   useEffect(() => {
-    const role = roles[currentRole];
+    // Clear any existing timeouts
+    if (pauseTimeoutRef.current) {
+      clearTimeout(pauseTimeoutRef.current);
+      pauseTimeoutRef.current = null;
+    }
+    if (nextRoleTimeoutRef.current) {
+      clearTimeout(nextRoleTimeoutRef.current);
+      nextRoleTimeoutRef.current = null;
+    }
+
+    if (roles.length === 0) return;
+
+    const role = roles[currentRole % roles.length];
     let currentIndex = 0;
 
     if (isTyping) {
@@ -30,9 +56,8 @@ export function Hero() {
           currentIndex++;
         } else {
           setIsTyping(false);
-          setTimeout(() => {
-            setIsTyping(false);
-            setTimeout(() => {
+          pauseTimeoutRef.current = setTimeout(() => {
+            nextRoleTimeoutRef.current = setTimeout(() => {
               setCurrentRole((prev) => (prev + 1) % roles.length);
               setDisplayText("");
               setIsTyping(true);
@@ -42,9 +67,19 @@ export function Hero() {
         }
       }, 100);
 
-      return () => clearInterval(typingInterval);
+      return () => {
+        clearInterval(typingInterval);
+        if (pauseTimeoutRef.current) {
+          clearTimeout(pauseTimeoutRef.current);
+          pauseTimeoutRef.current = null;
+        }
+        if (nextRoleTimeoutRef.current) {
+          clearTimeout(nextRoleTimeoutRef.current);
+          nextRoleTimeoutRef.current = null;
+        }
+      };
     }
-  }, [currentRole, isTyping]);
+  }, [currentRole, isTyping, roles]);
 
   const scrollToContact = () => {
     document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
