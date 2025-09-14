@@ -633,8 +633,13 @@ export default function Admin() {
             {/* Skills */}
             <Card>
               <CardHeader>
-                <CardTitle>Skills</CardTitle>
-                <CardDescription>Technologies and skills you work with</CardDescription>
+                <CardTitle className="flex items-center gap-2">
+                  <Zap className="w-5 h-5 text-primary" />
+                  Skills & Typewriter Effect
+                </CardTitle>
+                <CardDescription>
+                  Technologies and skills you work with. These skills will appear in the animated typewriter effect on your homepage hero section.
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex gap-2">
