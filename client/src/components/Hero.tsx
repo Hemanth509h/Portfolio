@@ -24,7 +24,6 @@ export function Hero() {
 
   // Refs for cleanup
   const pauseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const nextRoleTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const prevRolesRef = useRef<string[]>([]);
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -37,10 +36,6 @@ export function Hero() {
       if (pauseTimeoutRef.current) {
         clearTimeout(pauseTimeoutRef.current);
         pauseTimeoutRef.current = null;
-      }
-      if (nextRoleTimeoutRef.current) {
-        clearTimeout(nextRoleTimeoutRef.current);
-        nextRoleTimeoutRef.current = null;
       }
       if (typingIntervalRef.current) {
         clearInterval(typingIntervalRef.current);
@@ -57,63 +52,52 @@ export function Hero() {
     }
   }, [roles]);
 
+  // Typing effect - only handles typing animation
   useEffect(() => {
-    // Clear any existing timeouts
-    if (pauseTimeoutRef.current) {
-      clearTimeout(pauseTimeoutRef.current);
-      pauseTimeoutRef.current = null;
-    }
-    if (nextRoleTimeoutRef.current) {
-      clearTimeout(nextRoleTimeoutRef.current);
-      nextRoleTimeoutRef.current = null;
-    }
-    if (typingIntervalRef.current) {
-      clearInterval(typingIntervalRef.current);
-      typingIntervalRef.current = null;
-    }
-
-    if (roles.length === 0) return;
+    if (roles.length === 0 || !isTyping) return;
 
     const role = roles[currentRole % roles.length];
     let currentIndex = 0;
 
-    if (isTyping) {
-      typingIntervalRef.current = setInterval(() => {
-        if (currentIndex <= role.length) {
-          setDisplayText(role.slice(0, currentIndex));
-          currentIndex++;
-        } else {
-          setIsTyping(false);
-          if (typingIntervalRef.current) {
-            clearInterval(typingIntervalRef.current);
-            typingIntervalRef.current = null;
-          }
-          pauseTimeoutRef.current = setTimeout(() => {
-            nextRoleTimeoutRef.current = setTimeout(() => {
-              setCurrentRole((prev) => (prev + 1) % roles.length);
-              setDisplayText("");
-              setIsTyping(true);
-            }, 1000);
-          }, 2000);
-        }
-      }, 100);
-
-      return () => {
+    typingIntervalRef.current = setInterval(() => {
+      if (currentIndex <= role.length) {
+        setDisplayText(role.slice(0, currentIndex));
+        currentIndex++;
+      } else {
+        setIsTyping(false);
         if (typingIntervalRef.current) {
           clearInterval(typingIntervalRef.current);
           typingIntervalRef.current = null;
         }
-        if (pauseTimeoutRef.current) {
-          clearTimeout(pauseTimeoutRef.current);
-          pauseTimeoutRef.current = null;
-        }
-        if (nextRoleTimeoutRef.current) {
-          clearTimeout(nextRoleTimeoutRef.current);
-          nextRoleTimeoutRef.current = null;
-        }
-      };
-    }
+      }
+    }, 100);
+
+    return () => {
+      if (typingIntervalRef.current) {
+        clearInterval(typingIntervalRef.current);
+        typingIntervalRef.current = null;
+      }
+    };
   }, [currentRole, isTyping, roles]);
+
+  // Post-typing effect - handles pause and advancement to next role
+  useEffect(() => {
+    if (roles.length === 0 || isTyping) return;
+
+    // After typing is done, wait then move to next role
+    pauseTimeoutRef.current = setTimeout(() => {
+      setCurrentRole((prev) => (prev + 1) % roles.length);
+      setDisplayText("");
+      setIsTyping(true);
+    }, 3000); // Combined pause time
+
+    return () => {
+      if (pauseTimeoutRef.current) {
+        clearTimeout(pauseTimeoutRef.current);
+        pauseTimeoutRef.current = null;
+      }
+    };
+  }, [isTyping, roles]);
 
   const scrollToContact = () => {
     document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
