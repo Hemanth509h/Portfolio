@@ -1,9 +1,39 @@
 import express, { type Request, Response, NextFunction } from "express";
+import session from "express-session";
+import MemoryStore from "memorystore";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
 app.set('trust proxy', true);
+
+// Configure secure sessions
+const MemStore = MemoryStore(session);
+const isProduction = process.env.NODE_ENV === 'production';
+const sessionSecret = process.env.SESSION_SECRET || 'dev-session-secret-change-in-production';
+
+if (isProduction && sessionSecret === 'dev-session-secret-change-in-production') {
+  console.error('❌ SECURITY ERROR: SESSION_SECRET environment variable must be set in production!');
+  process.exit(1);
+}
+
+app.use(session({
+  secret: sessionSecret,
+  store: new MemStore({
+    checkPeriod: 86400000 // prune expired entries every 24h
+  }),
+  resave: false,
+  saveUninitialized: false,
+  name: 'portfolio.sid', // Don't use default connect.sid
+  cookie: {
+    secure: isProduction, // HTTPS only in production
+    httpOnly: true, // Prevent XSS
+    maxAge: 30 * 60 * 1000, // 30 minutes
+    sameSite: 'strict' // CSRF protection
+  },
+  rolling: true // Reset expiry on each request
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

@@ -13,6 +13,7 @@ export async function apiRequest(
     method?: string;
     headers?: Record<string, string>;
     body?: string;
+    credentials?: RequestCredentials;
   }
 ): Promise<any> {
   const { method = "GET", headers = {}, body } = options || {};

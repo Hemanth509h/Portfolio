@@ -33,7 +33,6 @@ const portfolioSchema = z.object({
 type PortfolioForm = z.infer<typeof portfolioSchema>;
 
 export default function Admin() {
-  const [adminCode, setAdminCode] = useState("");
   const [codeInput, setCodeInput] = useState("");
   const [skillInput, setSkillInput] = useState("");
   const [showProjectPreview, setShowProjectPreview] = useState(false);
@@ -41,27 +40,39 @@ export default function Admin() {
   const [showEducationPreview, setShowEducationPreview] = useState(false);
   const [showSkillSuggestions, setShowSkillSuggestions] = useState(false);
   const [showSkillPreview, setShowSkillPreview] = useState(false);
-  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [sessionInfo, setSessionInfo] = useState<any>(null);
+  const [isCheckingSession, setIsCheckingSession] = useState(true);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  // Check for admin code in URL or localStorage on mount
+  // Check admin session status on mount
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const codeFromUrl = urlParams.get('code');
-    const codeFromStorage = localStorage.getItem('adminCode');
-    
-    if (codeFromUrl) {
-      setAdminCode(codeFromUrl);
-      setIsUnlocked(true);
-      localStorage.setItem('adminCode', codeFromUrl);
-      // Clean up URL
-      window.history.replaceState({}, document.title, window.location.pathname);
-    } else if (codeFromStorage) {
-      setAdminCode(codeFromStorage);
-      setIsUnlocked(true);
-    }
+    checkSessionStatus();
   }, []);
+  
+  const checkSessionStatus = async () => {
+    try {
+      const response = await apiRequest("/api/admin/session", {
+        method: "GET",
+        credentials: "include",
+      });
+      
+      if (response.authenticated) {
+        setIsAuthenticated(true);
+        setSessionInfo(response);
+      } else {
+        setIsAuthenticated(false);
+        setSessionInfo(null);
+      }
+    } catch (error) {
+      console.error("Session check failed:", error);
+      setIsAuthenticated(false);
+      setSessionInfo(null);
+    } finally {
+      setIsCheckingSession(false);
+    }
+  };
 
   // Fetch portfolio data
   const { data: portfolioData, isLoading: isLoadingData } = useQuery({
@@ -110,14 +121,63 @@ export default function Admin() {
     }
   }, [portfolioData, form]);
 
+  // Admin login mutation
+  const loginMutation = useMutation({
+    mutationFn: async (code: string) => {
+      return await apiRequest("/api/admin/login", {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify({ code }),
+      });
+    },
+    onSuccess: (response) => {
+      setIsAuthenticated(true);
+      setSessionInfo(response.sessionInfo);
+      setCodeInput("");
+      toast({
+        title: "Login successful",
+        description: "You are now logged in to the admin panel",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Login failed",
+        description: error.message || "Invalid admin credentials",
+        variant: "destructive",
+      });
+    },
+  });
+  
+  // Admin logout mutation
+  const logoutMutation = useMutation({
+    mutationFn: async () => {
+      return await apiRequest("/api/admin/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+    },
+    onSuccess: () => {
+      setIsAuthenticated(false);
+      setSessionInfo(null);
+      toast({
+        title: "Logged out",
+        description: "You have been logged out of the admin panel",
+      });
+    },
+    onError: (error: any) => {
+      console.error("Logout error:", error);
+      // Even if logout fails, clear local state
+      setIsAuthenticated(false);
+      setSessionInfo(null);
+    },
+  });
+
   // Update portfolio mutation
   const updatePortfolioMutation = useMutation({
     mutationFn: async (data: PortfolioForm) => {
       return await apiRequest("/api/admin/portfolio", {
         method: "PUT",
-        headers: {
-          "X-Admin-Code": adminCode,
-        },
+        credentials: "include",
         body: JSON.stringify(data),
       });
     },
@@ -129,13 +189,12 @@ export default function Admin() {
       queryClient.invalidateQueries({ queryKey: ["/api/portfolio"] });
     },
     onError: (error: any) => {
-      if (error.message.includes("Invalid admin code")) {
-        setIsUnlocked(false);
-        setAdminCode("");
-        localStorage.removeItem('adminCode');
+      if (error.message.includes("session") || error.message.includes("expired")) {
+        setIsAuthenticated(false);
+        setSessionInfo(null);
         toast({
-          title: "Invalid admin code",
-          description: "Please enter the correct admin code",
+          title: "Session expired",
+          description: "Please log in again",
           variant: "destructive",
         });
         return;
@@ -148,34 +207,28 @@ export default function Admin() {
     },
   });
 
-  const handleUnlock = () => {
+  const handleLogin = () => {
     if (codeInput.trim()) {
-      setAdminCode(codeInput.trim());
-      setIsUnlocked(true);
-      localStorage.setItem('adminCode', codeInput.trim());
-      setCodeInput("");
-      toast({
-        title: "Admin panel unlocked",
-        description: "You can now edit portfolio data",
-      });
+      loginMutation.mutate(codeInput.trim());
     }
   };
 
-  const handleClearCode = () => {
-    setAdminCode("");
-    setIsUnlocked(false);
-    localStorage.removeItem('adminCode');
-    toast({
-      title: "Admin panel locked",
-      description: "Enter admin code to edit portfolio data",
-    });
+  const handleLogout = () => {
+    logoutMutation.mutate();
+  };
+  
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !loginMutation.isPending) {
+      e.preventDefault();
+      handleLogin();
+    }
   };
 
   const onSubmit = (data: PortfolioForm) => {
-    if (!isUnlocked || !adminCode) {
+    if (!isAuthenticated) {
       toast({
         title: "Access denied",
-        description: "Please unlock admin panel first",
+        description: "Please log in to the admin panel first",
         variant: "destructive",
       });
       return;
@@ -418,7 +471,7 @@ export default function Admin() {
             <p className="text-muted-foreground">Manage your portfolio content</p>
           </div>
           
-          {!isUnlocked ? (
+          {!isAuthenticated ? (
             <div className="flex items-center gap-2">
               <Lock className="w-4 h-4 text-muted-foreground" />
               <Input
@@ -426,26 +479,26 @@ export default function Admin() {
                 placeholder="Enter admin code"
                 value={codeInput}
                 onChange={(e) => setCodeInput(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && handleUnlock()}
+                onKeyPress={handleKeyPress}
                 data-testid="input-admin-code"
                 className="w-40"
               />
-              <Button onClick={handleUnlock} data-testid="button-unlock">
-                Unlock
+              <Button onClick={handleLogin} disabled={loginMutation.isPending} data-testid="button-login">
+                {loginMutation.isPending ? "Logging in..." : "Login"}
               </Button>
             </div>
           ) : (
             <div className="flex items-center gap-2">
               <Unlock className="w-4 h-4 text-green-500" />
               <span className="text-sm text-muted-foreground">Admin access granted</span>
-              <Button onClick={handleClearCode} variant="outline" size="sm" data-testid="button-clear-code">
-                Clear Code
+              <Button onClick={handleLogout} variant="outline" size="sm" disabled={logoutMutation.isPending} data-testid="button-logout">
+                {logoutMutation.isPending ? "Logging out..." : "Logout"}
               </Button>
             </div>
           )}
         </div>
 
-        {!isUnlocked && (
+        {!isAuthenticated && (
           <Card className="mb-8">
             <CardHeader>
               <CardTitle>Admin Access Required</CardTitle>
@@ -473,7 +526,7 @@ export default function Admin() {
                       <FormItem>
                         <FormLabel>Name</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="Your full name" disabled={!isUnlocked} data-testid="input-name" />
+                          <Input {...field} placeholder="Your full name" disabled={!isAuthenticated} data-testid="input-name" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -487,7 +540,7 @@ export default function Admin() {
                       <FormItem>
                         <FormLabel>Role</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="Your job title" disabled={!isUnlocked} data-testid="input-role" />
+                          <Input {...field} placeholder="Your job title" disabled={!isAuthenticated} data-testid="input-role" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -506,7 +559,7 @@ export default function Admin() {
                           {...field}
                           placeholder="Tell us about yourself..."
                           className="min-h-[100px]"
-                          disabled={!isUnlocked}
+                          disabled={!isAuthenticated}
                           data-testid="input-bio"
                         />
                       </FormControl>
@@ -523,7 +576,7 @@ export default function Admin() {
                       <FormItem>
                         <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input {...field} type="email" placeholder="your@email.com" disabled={!isUnlocked} data-testid="input-email" />
+                          <Input {...field} type="email" placeholder="your@email.com" disabled={!isAuthenticated} data-testid="input-email" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -537,7 +590,7 @@ export default function Admin() {
                       <FormItem>
                         <FormLabel>Phone (Optional)</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="+1 (555) 123-4567" disabled={!isUnlocked} data-testid="input-phone" />
+                          <Input {...field} placeholder="+1 (555) 123-4567" disabled={!isAuthenticated} data-testid="input-phone" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -552,7 +605,7 @@ export default function Admin() {
                     <FormItem>
                       <FormLabel>Location (Optional)</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="City, Country" disabled={!isUnlocked} data-testid="input-location" />
+                        <Input {...field} placeholder="City, Country" disabled={!isAuthenticated} data-testid="input-location" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -576,7 +629,7 @@ export default function Admin() {
                       <FormItem>
                         <FormLabel>GitHub URL (Optional)</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="https://github.com/yourusername" disabled={!isUnlocked} data-testid="input-github" />
+                          <Input {...field} placeholder="https://github.com/yourusername" disabled={!isAuthenticated} data-testid="input-github" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -590,7 +643,7 @@ export default function Admin() {
                       <FormItem>
                         <FormLabel>LinkedIn URL (Optional)</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="https://linkedin.com/in/yourprofile" disabled={!isUnlocked} data-testid="input-linkedin" />
+                          <Input {...field} placeholder="https://linkedin.com/in/yourprofile" disabled={!isAuthenticated} data-testid="input-linkedin" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -606,7 +659,7 @@ export default function Admin() {
                       <FormItem>
                         <FormLabel>Website URL (Optional)</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="https://yourwebsite.com" disabled={!isUnlocked} data-testid="input-website" />
+                          <Input {...field} placeholder="https://yourwebsite.com" disabled={!isAuthenticated} data-testid="input-website" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -620,7 +673,7 @@ export default function Admin() {
                       <FormItem>
                         <FormLabel>Resume URL (Optional)</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="https://yourresume.pdf" disabled={!isUnlocked} data-testid="input-resume" />
+                          <Input {...field} placeholder="https://yourresume.pdf" disabled={!isAuthenticated} data-testid="input-resume" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -648,10 +701,10 @@ export default function Admin() {
                     onChange={(e) => setSkillInput(e.target.value)}
                     onKeyPress={handleSkillKeyPress}
                     placeholder="Add a skill..."
-                    disabled={!isUnlocked}
+                    disabled={!isAuthenticated}
                     data-testid="input-skill"
                   />
-                  <Button type="button" onClick={addSkill} disabled={!isUnlocked} data-testid="button-add-skill">
+                  <Button type="button" onClick={addSkill} disabled={!isAuthenticated} data-testid="button-add-skill">
                     Add
                   </Button>
                 </div>
@@ -659,7 +712,7 @@ export default function Admin() {
                   {form.watch("skills").map((skill, index) => (
                     <Badge key={index} variant="secondary" className="flex items-center gap-1">
                       {skill}
-                      {isUnlocked && (
+                      {isAuthenticated && (
                         <X
                           className="w-3 h-3 cursor-pointer"
                           onClick={() => removeSkill(skill)}
@@ -683,7 +736,7 @@ export default function Admin() {
                       variant="outline"
                       size="sm"
                       onClick={formatProjectsJSON}
-                      disabled={!isUnlocked}
+                      disabled={!isAuthenticated}
                       data-testid="button-format-json"
                     >
                       <Code className="w-4 h-4 mr-1" />
@@ -727,7 +780,7 @@ export default function Admin() {
                             }
                           ], null, 2)}
                           className="min-h-[250px] font-mono text-sm"
-                          disabled={!isUnlocked}
+                          disabled={!isAuthenticated}
                           data-testid="input-projects"
                         />
                       </FormControl>
@@ -787,7 +840,7 @@ export default function Admin() {
                       variant="outline"
                       size="sm"
                       onClick={formatWorkExperienceJSON}
-                      disabled={!isUnlocked}
+                      disabled={!isAuthenticated}
                       data-testid="button-format-work-experience-json"
                     >
                       <Code className="w-4 h-4 mr-1" />
@@ -831,7 +884,7 @@ export default function Admin() {
                             }
                           ], null, 2)}
                           className="min-h-[250px] font-mono text-sm"
-                          disabled={!isUnlocked}
+                          disabled={!isAuthenticated}
                           data-testid="input-work-experience"
                         />
                       </FormControl>
@@ -886,7 +939,7 @@ export default function Admin() {
                       variant="outline"
                       size="sm"
                       onClick={formatEducationJSON}
-                      disabled={!isUnlocked}
+                      disabled={!isAuthenticated}
                       data-testid="button-format-education-json"
                     >
                       <Code className="w-4 h-4 mr-1" />
@@ -930,7 +983,7 @@ export default function Admin() {
                             }
                           ], null, 2)}
                           className="min-h-[250px] font-mono text-sm"
-                          disabled={!isUnlocked}
+                          disabled={!isAuthenticated}
                           data-testid="input-education"
                         />
                       </FormControl>
@@ -978,7 +1031,7 @@ export default function Admin() {
             <div className="flex justify-end">
               <Button
                 type="submit"
-                disabled={updatePortfolioMutation.isPending || !isUnlocked}
+                disabled={updatePortfolioMutation.isPending || !isAuthenticated}
                 data-testid="button-save"
               >
                 <Save className="w-4 h-4 mr-2" />
