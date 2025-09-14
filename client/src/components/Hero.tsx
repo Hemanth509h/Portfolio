@@ -25,16 +25,32 @@ export function Hero() {
   // Refs for cleanup
   const pauseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const nextRoleTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const prevRolesRef = useRef<string[]>([]);
 
-  // Reset typewriter state when roles array changes (like when skills are updated)
+  // Reset typewriter state only when roles array content actually changes (not just cycling)
   useEffect(() => {
-    if (roles.length > 0) {
+    const rolesChanged = JSON.stringify(prevRolesRef.current) !== JSON.stringify(roles);
+    
+    if (rolesChanged && roles.length > 0) {
+      // Clear existing timeouts to prevent conflicts
+      if (pauseTimeoutRef.current) {
+        clearTimeout(pauseTimeoutRef.current);
+        pauseTimeoutRef.current = null;
+      }
+      if (nextRoleTimeoutRef.current) {
+        clearTimeout(nextRoleTimeoutRef.current);
+        nextRoleTimeoutRef.current = null;
+      }
+      
       // Reset to first role and restart typing animation
       setCurrentRole(0);
       setDisplayText("");
       setIsTyping(true);
+      
+      // Update the ref to current roles
+      prevRolesRef.current = [...roles];
     }
-  }, [roles]); // Depend on the entire roles array, not just length
+  }, [roles]);
 
   useEffect(() => {
     // Clear any existing timeouts
