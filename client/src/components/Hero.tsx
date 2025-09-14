@@ -26,13 +26,14 @@ export function Hero() {
   const pauseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const nextRoleTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const prevRolesRef = useRef<string[]>([]);
+  const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Reset typewriter state only when roles array content actually changes (not just cycling)
+  // Reset typewriter state when roles array content changes
   useEffect(() => {
     const rolesChanged = JSON.stringify(prevRolesRef.current) !== JSON.stringify(roles);
     
-    if (rolesChanged && roles.length > 0) {
-      // Clear existing timeouts to prevent conflicts
+    if (rolesChanged) {
+      // Clear all existing timeouts and intervals to prevent conflicts
       if (pauseTimeoutRef.current) {
         clearTimeout(pauseTimeoutRef.current);
         pauseTimeoutRef.current = null;
@@ -40,6 +41,10 @@ export function Hero() {
       if (nextRoleTimeoutRef.current) {
         clearTimeout(nextRoleTimeoutRef.current);
         nextRoleTimeoutRef.current = null;
+      }
+      if (typingIntervalRef.current) {
+        clearInterval(typingIntervalRef.current);
+        typingIntervalRef.current = null;
       }
       
       // Reset to first role and restart typing animation
@@ -62,6 +67,10 @@ export function Hero() {
       clearTimeout(nextRoleTimeoutRef.current);
       nextRoleTimeoutRef.current = null;
     }
+    if (typingIntervalRef.current) {
+      clearInterval(typingIntervalRef.current);
+      typingIntervalRef.current = null;
+    }
 
     if (roles.length === 0) return;
 
@@ -69,12 +78,16 @@ export function Hero() {
     let currentIndex = 0;
 
     if (isTyping) {
-      const typingInterval = setInterval(() => {
+      typingIntervalRef.current = setInterval(() => {
         if (currentIndex <= role.length) {
           setDisplayText(role.slice(0, currentIndex));
           currentIndex++;
         } else {
           setIsTyping(false);
+          if (typingIntervalRef.current) {
+            clearInterval(typingIntervalRef.current);
+            typingIntervalRef.current = null;
+          }
           pauseTimeoutRef.current = setTimeout(() => {
             nextRoleTimeoutRef.current = setTimeout(() => {
               setCurrentRole((prev) => (prev + 1) % roles.length);
@@ -82,12 +95,14 @@ export function Hero() {
               setIsTyping(true);
             }, 1000);
           }, 2000);
-          clearInterval(typingInterval);
         }
       }, 100);
 
       return () => {
-        clearInterval(typingInterval);
+        if (typingIntervalRef.current) {
+          clearInterval(typingIntervalRef.current);
+          typingIntervalRef.current = null;
+        }
         if (pauseTimeoutRef.current) {
           clearTimeout(pauseTimeoutRef.current);
           pauseTimeoutRef.current = null;
