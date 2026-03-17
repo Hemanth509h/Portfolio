@@ -1,0 +1,69 @@
+/* IMPORT FONT */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+/* APPLY FONT GLOBALLY */
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+
+.aboutmesection{
+    background-color: #030711;
+    height: 100vh;
+   
+}
+.aboutmecontent{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+
+}
+.aboutmecontent h2 {
+    margin-top: 50px;
+    font-size: 48px;
+    color: #0DA2E7;
+    margin-bottom: 20px;
+}
+.aboutmecontent p {
+    font-size: 18px;
+    color: #64748b;
+    line-height: 1.6;
+    max-width: 600px;
+}
+.aboutmecontainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 40px;
+}
+img{
+    width: 350px;
+    height: 500px;
+    border-radius: 30px;
+    filter:brightness(0.7);
+     object-fit: cover;
+}
+.about-description2 > h4{
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 20px;
+}
+.about-description2 >p {
+    color: #64748b;
+    font-size: 16px;
+    line-height: 1.5;
+}
+.about-description2{
+    
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    gap: 20px;
+}
