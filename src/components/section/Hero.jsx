@@ -30,10 +30,10 @@ export function HeroSection() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="hero-heading"
         >
-          Hi, I'm <span>P Hemanth Kumar</span>
+          Hi, <br/>I'm <span>P Hemanth Kumar</span>
           <br />
           <span  style={{ color: "#38bdf8" }}>
-          Full Stack & Data Analyst
+          Full Stack <br/>Data Analyst
           </span>
         </Motion.h1>
 
