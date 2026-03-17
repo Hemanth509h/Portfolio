@@ -1,7 +1,7 @@
 import { motion as Motion } from "framer-motion";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import heroimage from "../../assets/hero-bg.png";
-import "./css/Hero.css";
+import "./css/hero.css";
 
 export function HeroSection() {
   return (
