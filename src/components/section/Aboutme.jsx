@@ -68,7 +68,7 @@ export function Aboutme() {
         >
           <h4>Bridging the gap between engineering and analytics.</h4>
           <p>
-            I'm Alex, a Full Stack Developer & Data Analyst with over 5 years of
+            I'm p Hemanth kumar, a Full Stack Developer & Data Analyst with over 5 years of
             experience building scalable web applications and complex data
             pipelines. My dual background allows me to architect robust backend
             systems while surfacing actionable insights.
