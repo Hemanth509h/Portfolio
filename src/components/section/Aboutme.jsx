@@ -41,6 +41,7 @@ export function Aboutme() {
               background: "linear-gradient(#10A4E8, #50E6FC, #10A4E8)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
+              marginTop: "-30px",
             }}
           >
             About Me
