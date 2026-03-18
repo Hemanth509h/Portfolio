@@ -28,7 +28,7 @@ const stats = [
 
 export function Aboutme() {
   return (
-    <section className="aboutmesection">
+    <section className="aboutmesection" id="about">
       <div className="aboutmecontent">
         <Motion.h2
           initial={{ opacity: 0, y: 30 }}

@@ -14,7 +14,7 @@ const SKILL_CATEGORIES = [
 
 export function Skills() {
   return (
-    <section className="skillssection">
+    <section className="skillssection" id="skills">
       <Motion.h1
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
