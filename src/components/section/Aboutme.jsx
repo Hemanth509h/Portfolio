@@ -36,7 +36,15 @@ export function Aboutme() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="about-heading"
         >
-          <span style={{ color: "#38bdf8" }}>About Me</span>
+          <span
+            style={{
+              background: "linear-gradient(#10A4E8, #50E6FC, #10A4E8)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            About Me
+          </span>
         </Motion.h2>
 
         <Motion.p
@@ -68,10 +76,10 @@ export function Aboutme() {
         >
           <h4>Bridging the gap between engineering and analytics.</h4>
           <p>
-            I'm Alex, a Full Stack Developer & Data Analyst with over 5 years of
-            experience building scalable web applications and complex data
-            pipelines. My dual background allows me to architect robust backend
-            systems while surfacing actionable insights.
+            I'm P Hemanth kumar, a Full Stack Developer & Data Analyst with over
+            5 years of experience building scalable web applications and complex
+            data pipelines. My dual background allows me to architect robust
+            backend systems while surfacing actionable insights.
           </p>
           <p>
             Whether it's designing a high-performance REST API, crafting a
@@ -99,15 +107,10 @@ export function Aboutme() {
                     delay: 0.4 + i * 0.1,
                   }}
                   className="stats-card"
-                  
                 >
-                  <Icon className="statsicon"/>
-                  <span className="statsvalue">
-                    {stat.value}
-                  </span>
-                  <span className="statslabel">
-                    {stat.label}
-                  </span>
+                  <Icon className="statsicon" />
+                  <span className="statsvalue">{stat.value}</span>
+                  <span className="statslabel">{stat.label}</span>
                 </Motion.div>
               );
             })}

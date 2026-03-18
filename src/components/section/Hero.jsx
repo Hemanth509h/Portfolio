@@ -6,14 +6,12 @@ import "./css/hero.css";
 export function HeroSection() {
   return (
     <section className="hero-section">
-
       <div
         className="hero-bg"
         style={{ backgroundImage: `url(${heroimage})` }}
       />
 
       <div className="hero-content">
-
         <Motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -30,10 +28,18 @@ export function HeroSection() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="hero-heading"
         >
-          Hi, <br/>I'm <span>P Hemanth Kumar</span>
+          Hi, <br />
+          I'm <span>P Hemanth Kumar</span>
           <br />
-          <span  style={{ color: "#38bdf8" }}>
-          Full Stack <br/>Data Analyst
+          <span
+            style={{
+              background: "linear-gradient(#10A4E8, #50E6FC, #10A4E8)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            Full Stack <br />
+            Data Analyst
           </span>
         </Motion.h1>
 
@@ -54,10 +60,11 @@ export function HeroSection() {
           className="hero-buttons"
         >
           <div className="buttons">
-          <button className="btn btn1">View My Work
-             <ArrowRight className="buttonarrowright" />
-          </button>
-          <button className="btn">Contact Me</button>
+            <button className="btn btn1">
+              View My Work
+              <ArrowRight className="buttonarrowright" />
+            </button>
+            <button className="btn">Contact Me</button>
           </div>
         </Motion.div>
       </div>
@@ -70,7 +77,6 @@ export function HeroSection() {
       >
         <ChevronDown size={32} />
       </Motion.div>
-
     </section>
   );
 }
