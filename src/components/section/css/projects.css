@@ -1,0 +1,38 @@
+/* IMPORT FONT */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+/* APPLY FONT GLOBALLY */
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+.projectssection {
+  background-color: #030711;
+  min-height: 700px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.projects-description {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+.projects-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+  background: linear-gradient(#10a4e8, #50e6fc, #10a4e8);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: flex;
+}
+.projects-description2 {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 40px;
+}

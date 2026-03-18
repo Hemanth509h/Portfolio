@@ -20,6 +20,9 @@ export function Skills() {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="Technical-Arsenal"
+        viewport={{
+          once: true,
+        }}
       >
         Technical Arsenal
       </Motion.h1>
@@ -27,6 +30,9 @@ export function Skills() {
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
+         viewport={{
+                    once: true,
+                  }}
         className="skills-description"
       >
         The tools and technologies I use to bring ideas to life.
