@@ -5,6 +5,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 .Technical-Arsenal {
   background: linear-gradient(#10a4e8, #50e6fc, #10a4e8);
