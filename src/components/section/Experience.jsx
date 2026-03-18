@@ -3,36 +3,7 @@ import { motion as Motion } from "framer-motion";
 import { Briefcase } from "lucide-react";
 
 const EXPERIENCES = [
-  {
-    role: "Senior Full Stack Developer",
-    company: "TechCorp",
-    period: "2022 - Present",
-    description: [
-      "Architected and deployed microservices-based web applications scaling to 1M+ daily active users.",
-      "Mentored junior developers and established CI/CD best practices reducing deployment time by 40%.",
-      "Integrated complex third-party payment and CRM APIs ensuring 99.99% uptime.",
-    ],
-  },
-  {
-    role: "Data Analyst",
-    company: "DataInsights Inc",
-    period: "2020 - 2022",
-    description: [
-      "Built automated Python ETL pipelines to aggregate disparate marketing data into central warehouses.",
-      "Created interactive Tableau dashboards utilized by C-suite for quarterly strategic planning.",
-      "Developed regression models to forecast seasonal demand, improving inventory efficiency by 15%.",
-    ],
-  },
-  {
-    role: "Junior Web Developer",
-    company: "StartupHub",
-    period: "2019 - 2020",
-    description: [
-      "Developed responsive landing pages and internal admin tools using React and Express.",
-      "Optimized legacy database queries, reducing average load times on core views by 2 seconds.",
-      "Collaborated tightly with UX designers to implement pixel-perfect, accessible interfaces.",
-    ],
-  },
+  
 ];
 
 export function Experience() {

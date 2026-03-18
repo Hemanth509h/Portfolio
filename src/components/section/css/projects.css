@@ -55,6 +55,7 @@
   padding: 25px;
   transition: 0.3s ease;
   position: relative;
+  max-width: 400px;
 }
 
 /* hover glow */

@@ -1,58 +1,40 @@
 import "./css/projects.css";
 import { motion as Motion } from "framer-motion";
-import { Github, ExternalLink, Activity, Server } from "lucide-react";
+import { Github, ExternalLink, Activity, Server,Code } from "lucide-react";
 
 const PROJECTS = [
   {
-    title: "E-Commerce Platform",
-    type: "Full Stack",
-    icon: Server,
+    title: "The Billing Software",
+    type: "Python with GUI",
+    icon: Code,
     description:
-      "A comprehensive scalable e-commerce solution featuring real-time inventory management, secure payments, and an intuitive admin dashboard.",
-    tags: ["React", "Node.js", "PostgreSQL", "Stripe"],
+      "Billing Software using Python with GUI: This project includes features for managing customer bills with a user-friendly interface. Each bill is saved as a PDF for printing and record-keeping, while the complete bill history is stored in an Excel file for easy access and analysis.",
+    tags: ["Python", "GUI", "PDF Generation", "Excel Integration"],
+    code: "https://github.com/Hemanth509h/The_Billing_Software.git",
+    demo: "",
+  },
+ {
+    title: "Grocerly Management System",
+    type: "Full Stack using Python",
+    icon: Code,
+    description:
+      "Grocerly is a modern web application for online grocery shopping and management. It offers user registration, product browsing, cart and order features, and admin/distributor dashboards. Built with Python, Jinja2, and JavaScript, Grocerly streamlines grocery store operations and enhances customer experience.",
+    tags: ["Python", "Flask", "Jinja2", "JavaScript", "MySQL"],
+    code: "https://github.com/Hemanth509h/Grocerly-Management-System.git",
+    demo: "",
   },
   {
-    title: "Sales Data Dashboard",
-    type: "Data Analysis",
-    icon: Activity,
+    title: "Trendcast",
+    type: "React and Python",
+    icon: Code,
     description:
-      "Interactive analytics dashboard processing millions of sales records to uncover actionable insights and regional performance metrics.",
-    tags: ["Python", "Tableau", "SQL", "Pandas"],
-    gradient: "from-cyan-500/20 to-emerald-500/20",
+      "Trendcast is a web application that provides real-time insights into trending topics on WalMart dataset . It features a user-friendly interface built with React, allowing users to explore and analyze Walmart trends. The backend, developed in Python, fetches and processes Walmart data to deliver up-to-date trend information, making it a powerful tool for social media analysis.",
+    tags: ["React", "Python", "Data Analysis", "Walmart Dataset"],
+    code: "https://github.com/Hemanth509h/Trendcast.git",
+    demo: "",
   },
-  {
-    title: "Real-Time Chat App",
-    type: "Full Stack",
-    icon: Server,
-    description:
-      "High-performance messaging application with end-to-end encryption, typing indicators, and media sharing capabilities.",
-    tags: ["React", "WebSockets", "MongoDB", "Express"],
-    gradient: "from-indigo-500/20 to-pink-500/20",
-  },
-  {
-    title: "Customer Churn Prediction",
-    type: "Machine Learning",
-    icon: Activity,
-    description:
-      "Predictive ML model that identifies at-risk customers with 94% accuracy, helping retention teams proactively engage clients.",
-    tags: ["Scikit-Learn", "Python", "Jupyter"],
-  },
-  {
-    title: "Task Management API",
-    type: "Full Stack",
-    icon: Server,
-    description:
-      "Robust RESTful API for team productivity. Includes advanced RBAC, rate limiting, and comprehensive OpenAPI documentation.",
-    tags: ["Node.js", "Docker", "Redis", "Jest"],
-  },
-  {
-    title: "Market Trend Analyzer",
-    type: "Data Analysis",
-    icon: Activity,
-    description:
-      "Automated scraping and sentiment analysis tool for social media and news outlets to track emerging tech market trends.",
-    tags: ["Python", "BeautifulSoup", "NLTK", "Matplotlib"],
-  },
+  
+  
 ];
 
 export function Projects() {
@@ -64,19 +46,16 @@ export function Projects() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="projects-title"
-          viewport={{
-            once: true,
-          }}
+          viewport={{ once: true }}
         >
           Featured Work
         </Motion.h1>
+
         <Motion.p
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          viewport={{
-            once: true,
-          }}
+          viewport={{ once: true }}
           className="projects-description2"
         >
           A selection of my recent full stack applications and data analysis
@@ -84,25 +63,29 @@ export function Projects() {
         </Motion.p>
       </div>
 
-      
       <div className="projects-container">
-        {PROJECTS.map((project, index) => (
+        {[...PROJECTS].reverse().map((project, index) => (
           <Motion.div
             key={index}
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.2 }}
-            viewport={{
-              once: true,
-            }}
+            viewport={{ once: true }}
             className="project-card"
           >
+            {/* HEADER */}
             <div className="project-header">
               <project.icon size={24} />
               <span className="project-type">{project.type}</span>
             </div>
+
+            {/* TITLE */}
             <h3 className="project-title">{project.title}</h3>
+
+            {/* DESCRIPTION */}
             <p className="project-description">{project.description}</p>
+
+            {/* TAGS */}
             <div className="project-tags">
               {project.tags.map((tag, tagIndex) => (
                 <span key={tagIndex} className="project-tag">
@@ -110,12 +93,26 @@ export function Projects() {
                 </span>
               ))}
             </div>
+
             <hr />
+
+            {/* FOOTER */}
             <div className="project-footer">
-              <a href="#" className="project-link">
+              <a
+                href={project.code}
+                className="project-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Github size={16} /> Code
               </a>
-              <a href="#" className="project-link">
+
+              <a
+                href={project.demo}
+                className="project-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <ExternalLink size={16} /> Demo
               </a>
             </div>

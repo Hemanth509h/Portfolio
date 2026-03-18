@@ -6,24 +6,19 @@ import { Code2, Database, Layout, Terminal } from "lucide-react";
 const stats = [
   {
     label: "Years Experience",
-    value: "1+",
+    value: "2+",
     icon: Terminal,
   },
   {
     label: "Projects Completed",
-    value: "10+",
+    value: "6+",
     icon: Layout,
   },
   {
     label: "Technologies",
-    value: "10+",
+    value: "12+",
     icon: Code2,
-  },
-  {
-    label: "Data Pipelines",
-    value: "20+",
-    icon: Database,
-  },
+  }
 ];
 
 export function Aboutme() {
