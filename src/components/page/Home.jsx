@@ -4,6 +4,7 @@ import {HeroSection} from '../section/Hero';
 import {Aboutme} from '../section/Aboutme';
 import {Skills} from '../section/skills';
 import {Projects} from '../section/Projects';
+import {Experience} from '../section/Experience';
 
 
 
@@ -16,6 +17,7 @@ function Home() {
         <Aboutme />
         <Skills />
         <Projects />
+        <Experience />
      </div>
     </div>
   );
