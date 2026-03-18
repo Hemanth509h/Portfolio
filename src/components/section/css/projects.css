@@ -1,40 +1,163 @@
-/* IMPORT FONT */
+/* ================= GLOBAL ================= */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
 
-/* APPLY FONT GLOBALLY */
 * {
   font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+/* ================= SECTION ================= */
 .projectssection {
-  background-color: #030711;
-  min-height: 700px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  overflow: hidden;
-
+  background: #020617;
+  padding: 80px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+/* ================= TITLE ================= */
 .projects-description {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    
+  text-align: center;
+  margin-bottom: 50px;
 }
 
 .projects-title {
   font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 20px;
-  color: #333;
+  font-weight: 700;
   background: linear-gradient(#10a4e8, #50e6fc, #10a4e8);
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  display: flex;
 }
+
 .projects-description2 {
-  font-size: 1.2rem;
-  color: #555;
-  margin-bottom: 40px;
+  color: #94a3b8;
+  margin-top: 10px;
+  font-size: 1.1rem;
+}
+
+/* ================= GRID ================= */
+.projects-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* ================= CARD ================= */
+.project-card {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  backdrop-filter: blur(12px);
+  border-radius: 18px;
+  padding: 25px;
+  transition: 0.3s ease;
+  position: relative;
+}
+
+/* hover glow */
+.project-card:hover {
+  transform: translateY(-6px);
+  border-color: #38bdf8;
+  box-shadow: 0 0 25px rgba(56, 189, 248, 0.15);
+}
+
+/* ================= HEADER ================= */
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.project-header svg {
+  color: #38bdf8;
+}
+
+/* type badge */
+.project-type {
+  font-size: 0.75rem;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.15);
+  color: #cbd5f5;
+}
+
+/* ================= CONTENT ================= */
+.project-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  margin-bottom: 10px;
+}
+
+.project-description {
+  font-size: 0.95rem;
+  color: #94a3b8;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+/* ================= TAGS ================= */
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.project-tag {
+  font-size: 0.75rem;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.1);
+  color: #cbd5f5;
+}
+
+/* ================= FOOTER ================= */
+.project-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+/* links */
+.project-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  color: #38bdf8;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.project-link:hover {
+  color: #0ea5e9;
+  
+}
+hr {
+  border: none;
+  border-top: 1px solid rgba(148, 163, 184, 0.15);
+  margin: 10px 0;
+}
+.project-footer{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+
+}
+
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+  .projects-title {
+    font-size: 2rem;
+  }
+
+  .projects-description2 {
+    font-size: 1rem;
+  }
 }
