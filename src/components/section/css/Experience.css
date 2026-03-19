@@ -144,6 +144,28 @@
   background: #10a4e8;
   border-radius: 50%;
 }
+/* FIX TEXT ALIGNMENT */
+.timeline-content {
+  text-align: left;
+}
+
+.timeline-item.reverse .timeline-content {
+  text-align: right;
+}
+
+/* FIX CARD CONTENT ALWAYS LEFT INSIDE */
+.card {
+  text-align: left;
+}
+
+/* OPTIONAL: Better spacing for list */
+.card ul {
+  margin-top: 10px;
+}
+
+.card li {
+  line-height: 1.6;
+} 
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
