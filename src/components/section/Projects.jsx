@@ -25,57 +25,68 @@ const PROJECTS = [
     type: "Python with GUI",
     icon: Code,
     description:
-      "Billing Software using Python GUI with PDF generation and Excel-based bill history.",
+      "Billing Software using Python with GUI: This project includes features for managing customer bills with a user-friendly interface. Each bill is saved as a PDF for printing and record-keeping, while the complete bill history is stored in an Excel file for easy access and analysis.",
     tags: ["Python", "GUI", "PDF", "Excel"],
     code: "https://github.com/Hemanth509h/The_Billing_Software.git",
     demo: "",
     category: "Full Stack & Web Apps",
   },
   {
-    title: "Grocery Management System",
+    title: "Login an Register page using python an MongoDB",
+    type: "Python With MongoDB",
+    icon: Code,
+    description:
+      "This project demonstrates a Login and Registration Page built using Python and MongoDB, aimed at providing secure and user- friendly authentication functionality for applications.The project utilizes Flask(a Python web framework) for backend development and MongoDB for database management.",
+    tags: ["Python","MongoDB",'HTML','javascript'],
+    code: "https://github.com/Hemanth509h/The_Billing_Software.git",
+      demo: "",
+        category: "Full Stack & Web Apps",
+  },
+{
+  title: "Grocery Management System",
     type: "Full Stack using Python",
-    icon: Code,
-    description:
-      "Online grocery platform with user login, cart, admin dashboard and MySQL database.",
+      icon: Code,
+        description:
+  "Online grocery platform with user login, cart, admin dashboard and MySQL database.",
     tags: ["Python", "Flask", "Jinja2", "JavaScript", "MySQL"],
-    code: "https://github.com/Hemanth509h/Grocerly-Management-System.git",
-    demo: "",
-    category: "Full Stack & Web Apps",
+      code: "https://github.com/Hemanth509h/Grocerly-Management-System.git",
+        demo: "",
+          category: "Full Stack & Web Apps",
   },
-  {
-    title: "Trendcast",
+{
+  title: "Trendcast",
     type: "React + Python",
-    icon: Code,
-    description:
-      "Web app to analyze Walmart dataset trends with React frontend and Python backend.",
+      icon: Code,
+        description:
+  "Web app to analyze Walmart dataset trends with React frontend and Python backend.",
     tags: ["React", "Python", "Data Analysis"],
-    code: "https://github.com/Hemanth509h/Trendcast.git",
-    demo: "",
-    category: "Full Stack & Web Apps",
+      code: "https://github.com/Hemanth509h/Trendcast.git",
+        demo: "",
+          category: "Full Stack & Web Apps",
   },
-  {
-    title: "Netflix Data Analysis",
+{
+  title: "Netflix Data Analysis",
     type: "Power Bi",
-    icon: Activity,
-    images: [netflix1, netflix2, netflix3, netflix4, netflix5, netflix6, netflix7, netflix8],
-    description:
-      "Performed EDA, visualization, and statistical analysis on Netflix dataset.",
+      icon: Activity,
+        images: [netflix1, netflix2, netflix3, netflix4, netflix5, netflix6, netflix7, netflix8],
+          description:
+  "Performed EDA, visualization, and statistical analysis on Netflix dataset.",
     tags: ["Power Bi", "Data Analysis", "Visualization"],
-    code: "https://github.com/Hemanth509h/Data-analysis/tree/main/netflix%20analysis",
-    demo: "",
-    category: "Data Analysis",
+      code: "https://github.com/Hemanth509h/Data-analysis/tree/main/netflix%20analysis",
+        demo: "",
+          category: "Data Analysis",
   },
-  {
-    title: "Walmart Data Analysis",
+{
+  title: "Walmart Data Analysis",
     type: "Power Bi",
-    icon: Activity,
-    images: [walmart1, walmart2, walmart3, walmart4, walmart5],
-    description:
-      "Performed EDA, visualization, and statistical analysis on Walmart dataset.",
+      icon: Activity,
+        images: [walmart1, walmart2, walmart3, walmart4, walmart5],
+          description:
+  "Performed EDA, visualization, and statistical analysis on Walmart dataset.",
     tags: ["Power Bi", "Data Analysis", "Visualization"],
-    code: "https://github.com/Hemanth509h/Data-analysis/tree/main/walmart%20analysis",
-    demo: "",
-    category: "Data Analysis",
+      code: "https://github.com/Hemanth509h/Data-analysis/tree/main/walmart%20analysis",
+        demo: "",
+          category: "Data Analysis",
   },
 ];
 const groupedProjects = PROJECTS.reduce((acc, project) => {
