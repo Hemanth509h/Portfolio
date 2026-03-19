@@ -153,7 +153,9 @@ html {
 }
 
 @media (max-width: 768px) {
-  
+  .nav{
+    display: none;
+  }
   .mobile-menu {
     display: block;
   }
