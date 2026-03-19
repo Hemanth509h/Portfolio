@@ -1,52 +1,74 @@
 import "./css/projects.css";
 import { motion as Motion } from "framer-motion";
-import { Github, ExternalLink, Activity, Server,Code } from "lucide-react";
+import { Github, ExternalLink, Activity, Code } from "lucide-react";
 
+/* ================= PROJECT DATA ================= */
 const PROJECTS = [
   {
     title: "The Billing Software",
     type: "Python with GUI",
     icon: Code,
     description:
-      "Billing Software using Python with GUI: This project includes features for managing customer bills with a user-friendly interface. Each bill is saved as a PDF for printing and record-keeping, while the complete bill history is stored in an Excel file for easy access and analysis.",
-    tags: ["Python", "GUI", "PDF Generation", "Excel Integration"],
+      "Billing Software using Python GUI with PDF generation and Excel-based bill history.",
+    tags: ["Python", "GUI", "PDF", "Excel"],
     code: "https://github.com/Hemanth509h/The_Billing_Software.git",
     demo: "",
+    category: "Full Stack & Web Apps",
   },
- {
-    title: "Grocerly Management System",
+  {
+    title: "Grocery Management System",
     type: "Full Stack using Python",
     icon: Code,
     description:
-      "Grocerly is a modern web application for online grocery shopping and management. It offers user registration, product browsing, cart and order features, and admin/distributor dashboards. Built with Python, Jinja2, and JavaScript, Grocerly streamlines grocery store operations and enhances customer experience.",
+      "Online grocery platform with user login, cart, admin dashboard and MySQL database.",
     tags: ["Python", "Flask", "Jinja2", "JavaScript", "MySQL"],
     code: "https://github.com/Hemanth509h/Grocerly-Management-System.git",
     demo: "",
+    category: "Full Stack & Web Apps",
   },
   {
     title: "Trendcast",
-    type: "React and Python",
+    type: "React + Python",
     icon: Code,
     description:
-      "Trendcast is a web application that provides real-time insights into trending topics on WalMart dataset . It features a user-friendly interface built with React, allowing users to explore and analyze Walmart trends. The backend, developed in Python, fetches and processes Walmart data to deliver up-to-date trend information, making it a powerful tool for social media analysis.",
-    tags: ["React", "Python", "Data Analysis", "Walmart Dataset"],
+      "Web app to analyze Walmart dataset trends with React frontend and Python backend.",
+    tags: ["React", "Python", "Data Analysis"],
     code: "https://github.com/Hemanth509h/Trendcast.git",
     demo: "",
+    category: "Full Stack & Web Apps",
   },
-  
-  
+  {
+    title: "Walmart Data Analysis",
+    type: "Python + Jupyter",
+    icon: Activity,
+    description:
+      "Performed EDA, visualization, and statistical analysis on Walmart dataset.",
+    tags: ["Python", "Pandas", "EDA", "Visualization"],
+    code: "https://github.com/Hemanth509h/Data-Analysis-on-Walmart-Dataset.git",
+    demo: "",
+    category: "Data Analysis",
+  },
 ];
 
+/* ================= GROUP BY CATEGORY ================= */
+const groupedProjects = PROJECTS.reduce((acc, project) => {
+  if (!acc[project.category]) acc[project.category] = [];
+  acc[project.category].push(project);
+  return acc;
+}, {});
+
+/* ================= COMPONENT ================= */
 export function Projects() {
   return (
     <section className="projectssection" id="projects">
+      {/* TITLE */}
       <div className="projects-description">
         <Motion.h1
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="projects-title"
           viewport={{ once: true }}
+          className="projects-title"
         >
           Featured Work
         </Motion.h1>
@@ -58,67 +80,77 @@ export function Projects() {
           viewport={{ once: true }}
           className="projects-description2"
         >
-          A selection of my recent full stack applications and data analysis
-          projects.
+          A selection of my full stack applications and data analysis projects.
         </Motion.p>
       </div>
 
-      <div className="projects-container">
-        {[...PROJECTS].reverse().map((project, index) => (
-          <Motion.div
-            key={index}
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: index * 0.2 }}
-            viewport={{ once: true }}
-            className="project-card"
-          >
-            {/* HEADER */}
-            <div className="project-header">
-              <project.icon size={24} />
-              <span className="project-type">{project.type}</span>
-            </div>
+      {/* PROJECTS */}
+      {Object.entries(groupedProjects).map(([category, projects]) => (
+        <div key={category} className="category-section">
+          <h2 className="category-title">{category}</h2>
 
-            {/* TITLE */}
-            <h3 className="project-title">{project.title}</h3>
-
-            {/* DESCRIPTION */}
-            <p className="project-description">{project.description}</p>
-
-            {/* TAGS */}
-            <div className="project-tags">
-              {project.tags.map((tag, tagIndex) => (
-                <span key={tagIndex} className="project-tag">
-                  {tag}
-                </span>
-              ))}
-            </div>
-
-            <hr />
-
-            {/* FOOTER */}
-            <div className="project-footer">
-              <a
-                href={project.code}
-                className="project-link"
-                target="_blank"
-                rel="noopener noreferrer"
+          <div className="projects-container">
+            {projects.map((project, index) => (
+              <Motion.div
+                key={index}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.2 }}
+                viewport={{ once: true }}
+                className="project-card"
               >
-                <Github size={16} /> Code
-              </a>
+                {/* HEADER */}
+                <div className="project-header">
+                  <project.icon size={22} />
+                  <span className="project-type">{project.type}</span>
+                </div>
 
-              <a
-                href={project.demo}
-                className="project-link"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <ExternalLink size={16} /> Demo
-              </a>
-            </div>
-          </Motion.div>
-        ))}
-      </div>
+                {/* TITLE */}
+                <h3 className="project-title">{project.title}</h3>
+
+                {/* DESCRIPTION */}
+                <p className="project-description">
+                  {project.description}
+                </p>
+
+                {/* TAGS */}
+                <div className="project-tags">
+                  {project.tags.map((tag, i) => (
+                    <span key={i} className="project-tag">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                <hr />
+
+                {/* FOOTER */}
+                <div className="project-footer">
+                  <a
+                    href={project.code}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="project-link"
+                  >
+                    <Github size={16} /> Code
+                  </a>
+
+                  {project.demo && (
+                    <a
+                      href={project.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="project-link"
+                    >
+                      <ExternalLink size={16} /> Demo
+                    </a>
+                  )}
+                </div>
+              </Motion.div>
+            ))}
+          </div>
+        </div>
+      ))}
     </section>
   );
 }
