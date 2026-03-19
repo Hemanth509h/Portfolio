@@ -1,6 +1,8 @@
 import "./css/projects.css";
 import { motion as Motion } from "framer-motion";
 import { Github, ExternalLink, Activity, Code } from "lucide-react";
+import netflixPreview from "../../assets/netflix/netflix_page-0001.jpg";
+import walmartPreview from "../../assets/walmart/walmart sales analysis_page-0001.jpg";
 
 /* ================= PROJECT DATA ================= */
 const PROJECTS = [
@@ -41,6 +43,7 @@ const PROJECTS = [
     title: "Netflix Data Analysis",
     type: "Power Bi",
     icon: Activity,
+    image: netflixPreview,
     description:
       "Performed EDA, visualization, and statistical analysis on Netflix dataset.",
     tags: ["Power Bi", "Data Analysis", "Visualization"],
@@ -48,10 +51,11 @@ const PROJECTS = [
     demo: "",
     category: "Data Analysis",
   },
-   {
+  {
     title: "Walmart Data Analysis",
     type: "Power Bi",
     icon: Activity,
+    image: walmartPreview,
     description:
       "Performed EDA, visualization, and statistical analysis on Walmart dataset.",
     tags: ["Power Bi", "Data Analysis", "Visualization"],
@@ -110,6 +114,13 @@ export function Projects() {
                 viewport={{ once: true }}
                 className="project-card"
               >
+                {/* PREVIEW IMAGE */}
+                {project.image && (
+                  <div className="project-image">
+                    <img src={project.image} alt={project.title} />
+                  </div>
+                )}
+
                 {/* HEADER */}
                 <div className="project-header">
                   <project.icon size={22} />
