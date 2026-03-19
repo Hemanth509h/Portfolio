@@ -78,13 +78,16 @@ const PROJECTS = [
     category: "Data Analysis",
   },
 ];
-
 const groupedProjects = PROJECTS.reduce((acc, project) => {
   if (!acc[project.category]) acc[project.category] = [];
   acc[project.category].push(project);
   return acc;
 }, {});
 
+// Reverse each category
+Object.keys(groupedProjects).forEach((key) => {
+  groupedProjects[key].reverse();
+});
 /* ================= IMAGE SLIDER ================= */
 function ImageSlider({ images, title }) {
   const [current, setCurrent] = useState(0);
