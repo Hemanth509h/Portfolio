@@ -1,10 +1,3 @@
-/* IMPORT FONT */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
-
-/* APPLY FONT GLOBALLY */
-body {
-  font-family: 'Poppins', sans-serif;
-}
 
 /* HERO SECTION */
 
@@ -83,7 +76,7 @@ body {
   color: #e5e7eb;
   margin-bottom: 10px;
   width: 100%;
-   font-family: 'Poppins', sans-serif;
+   font-family: 'Space Grotesk', sans-serif;
 }
 
 /* gradient title */
