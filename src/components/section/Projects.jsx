@@ -25,80 +25,80 @@ const PROJECTS = [
     type: "Python with GUI",
     icon: Code,
     description:
-      "Billing Software using Python with GUI: This project includes features for managing customer bills with a user-friendly interface. Each bill is saved as a PDF for printing and record-keeping, while the complete bill history is stored in an Excel file for easy access and analysis.",
+      "Billing Software using Python with GUI. Generates PDF bills and stores history in Excel.",
     tags: ["Python", "GUI", "PDF", "Excel"],
     code: "https://github.com/Hemanth509h/The_Billing_Software.git",
-    demo: "",
+    demo: "", 
     category: "Full Stack & Web Apps",
   },
   {
-    title: "Login an Register page using python an MongoDB",
-    type: "Python With MongoDB",
+    title: "Login & Register (MongoDB)",
+    type: "Python + MongoDB",
     icon: Code,
     description:
-      "This project demonstrates a Login and Registration Page built using Python and MongoDB, aimed at providing secure and user- friendly authentication functionality for applications.The project utilizes Flask(a Python web framework) for backend development and MongoDB for database management.",
-    tags: ["Python","MongoDB",'HTML','javascript'],
+      "Secure login/register system using Flask and MongoDB with authentication.",
+    tags: ["Python", "MongoDB", "HTML", "JavaScript"],
     code: "https://github.com/Hemanth509h/login_an_register.git",
-      demo: "https://loginregisterpages.vercel.app/",
-        category: "Full Stack & Web Apps",
+    demo: "https://loginregisterpages.vercel.app/",
+    category: "Full Stack & Web Apps",
   },
-{
-  title: "Grocery Management System",
-    type: "Full Stack using Python",
-      icon: Code,
-        description:
-  "Billing Software using Python with GUI: This project includes features for managing customer bills with a user-friendly interface. Each bill is saved as a PDF for printing and record-keeping, while the complete bill history is stored in an Excel file for easy access and analysis.",
-    tags: ["Python", "Flask", "Jinja2", "JavaScript", "MySQL"],
-      code: "https://github.com/Hemanth509h/Grocerly-Management-System.git",
-        demo: "https://elitegrocers.vercel.app/",
-          category: "Full Stack & Web Apps",
+  {
+    title: "Grocery Management System",
+    type: "Full Stack",
+    icon: Code,
+    description:
+      "Full stack grocery system with billing, database storage and UI.",
+    tags: ["Python", "Flask", "MySQL", "JavaScript"],
+    code: "https://github.com/Hemanth509h/Grocerly-Management-System.git",
+    demo: "https://elitegrocers.vercel.app/",
+    category: "Full Stack & Web Apps",
   },
-{
-  title: "Trendcast",
+  {
+    title: "Trendcast",
     type: "React + Python",
-      icon: Code,
-        description:
-  "Trendcast is a web application that provides real-time insights into trending topics on Twitter. It features a user-friendly interface built with React, allowing users to explore and analyze Twitter trends. The backend, developed in Python, fetches and processes Twitter data to deliver up-to-date trend information, making it a powerful tool for soc",
+    icon: Code,
+    description:
+      "Twitter trend analysis app with real-time data visualization.",
     tags: ["React", "Python", "Data Analysis"],
-      code: "https://github.com/Hemanth509h/Trendcast.git",
-        demo: "https://trendcasts.vercel.app/",
-          category: "Full Stack & Web Apps",
+    code: "https://github.com/Hemanth509h/Trendcast.git",
+    demo: "https://trendcasts.vercel.app/",
+    category: "Full Stack & Web Apps",
   },
-{
-  title: "Netflix Data Analysis",
-    type: "Power Bi",
-      icon: Activity,
-        images: [netflix1, netflix2, netflix3, netflix4, netflix5, netflix6, netflix7, netflix8],
-          description:
-  "Performed EDA, visualization, and statistical analysis on Netflix dataset.",
-    tags: ["Power Bi", "Data Analysis", "Visualization"],
-      code: "https://github.com/Hemanth509h/Data-analysis/tree/main/netflix%20analysis",
-        demo: "",
-          category: "Data Analysis",
+  {
+    title: "Netflix Data Analysis",
+    type: "Power BI",
+    icon: Activity,
+    images: [netflix1, netflix2, netflix3, netflix4, netflix5, netflix6, netflix7, netflix8],
+    description: "EDA and visualization on Netflix dataset.",
+    tags: ["Power BI", "Data Analysis"],
+    code: "https://github.com/Hemanth509h/Data-analysis/tree/main/netflix%20analysis",
+    demo: "",
+    category: "Data Analysis",
   },
-{
-  title: "Walmart Data Analysis",
-    type: "Power Bi",
-      icon: Activity,
-        images: [walmart1, walmart2, walmart3, walmart4, walmart5],
-          description:
-  "Performed EDA, visualization, and statistical analysis on Walmart dataset.",
-    tags: ["Power Bi", "Data Analysis", "Visualization"],
-      code: "https://github.com/Hemanth509h/Data-analysis/tree/main/walmart%20analysis",
-        demo: "",
-          category: "Data Analysis",
+  {
+    title: "Walmart Data Analysis",
+    type: "Power BI",
+    icon: Activity,
+    images: [walmart1, walmart2, walmart3, walmart4, walmart5],
+    description: "EDA and visualization on Walmart dataset.",
+    tags: ["Power BI", "Data Analysis"],
+    code: "https://github.com/Hemanth509h/Data-analysis/tree/main/walmart%20analysis",
+    demo: "",
+    category: "Data Analysis",
   },
 ];
+
+/* ================= GROUP ================= */
 const groupedProjects = PROJECTS.reduce((acc, project) => {
   if (!acc[project.category]) acc[project.category] = [];
   acc[project.category].push(project);
   return acc;
 }, {});
 
-// Reverse each category
 Object.keys(groupedProjects).forEach((key) => {
   groupedProjects[key].reverse();
 });
+
 /* ================= IMAGE SLIDER ================= */
 function ImageSlider({ images, title }) {
   const [current, setCurrent] = useState(0);
@@ -115,12 +115,13 @@ function ImageSlider({ images, title }) {
 
   return (
     <div className="slider">
-      <img src={images[current]} alt={`${title} slide ${current + 1}`} className="slider-img" />
+      <img src={images[current]} alt={title} className="slider-img" />
 
-      <button className="slider-btn slider-btn-left" onClick={prev} aria-label="Previous">
+      <button className="slider-btn slider-btn-left" onClick={prev}>
         <ChevronLeft size={18} />
       </button>
-      <button className="slider-btn slider-btn-right" onClick={next} aria-label="Next">
+
+      <button className="slider-btn slider-btn-right" onClick={next}>
         <ChevronRight size={18} />
       </button>
 
@@ -129,13 +130,17 @@ function ImageSlider({ images, title }) {
           <button
             key={i}
             className={`slider-dot ${i === current ? "active" : ""}`}
-            onClick={(e) => { e.stopPropagation(); setCurrent(i); }}
-            aria-label={`Go to slide ${i + 1}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              setCurrent(i);
+            }}
           />
         ))}
       </div>
 
-      <span className="slider-counter">{current + 1} / {images.length}</span>
+      <span className="slider-counter">
+        {current + 1} / {images.length}
+      </span>
     </div>
   );
 }
@@ -144,64 +149,38 @@ function ImageSlider({ images, title }) {
 export function Projects() {
   return (
     <section className="projectssection" id="projects">
-      {/* TITLE */}
       <div className="projects-description">
-        <Motion.h1
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="projects-title"
-        >
+        <Motion.h1 className="projects-title">
           Featured Work
         </Motion.h1>
-
-        <Motion.p
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="projects-description2"
-        >
-          A selection of my full stack applications and data analysis projects.
-        </Motion.p>
+        <p className="projects-description2">
+          My full stack & data analysis projects
+        </p>
       </div>
 
-      {/* PROJECTS */}
       {Object.entries(groupedProjects).map(([category, projects]) => (
         <div key={category} className="category-section">
           <h2 className="category-title">{category}</h2>
 
           <div className="projects-container">
             {projects.map((project, index) => (
-              <Motion.div
-                key={index}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.2 }}
-                viewport={{ once: true }}
-                className="project-card"
-              >
-                {/* IMAGE SLIDER */}
+              <div key={index} className="project-card">
+
                 {project.images && (
                   <ImageSlider images={project.images} title={project.title} />
                 )}
 
-                {/* HEADER */}
                 <div className="project-header">
                   <project.icon size={22} />
                   <span className="project-type">{project.type}</span>
                 </div>
 
-                {/* TITLE */}
                 <h3 className="project-title">{project.title}</h3>
 
-                {/* DESCRIPTION */}
                 <p className="project-description">
                   {project.description}
                 </p>
 
-                {/* TAGS */}
                 <div className="project-tags">
                   {project.tags.map((tag, i) => (
                     <span key={i} className="project-tag">
@@ -212,29 +191,22 @@ export function Projects() {
 
                 <hr />
 
-                {/* FOOTER */}
+                {/* ✅ FIXED FOOTER */}
                 <div className="project-footer">
-                  <a
-                    href={project.code}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="project-link"
-                  >
+                  <a href={project.code} target="_blank" className="project-link">
                     <Github size={16} /> Code
                   </a>
 
-                  {project.demo && (
-                    <a
-                      href={project.demo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="project-link"
-                    >
-                      <ExternalLink size={16} /> Demo
-                    </a>
-                  )}
+                  <a
+                    href={project.demo || "#"}
+                    target="_blank"
+                    className={`project-link ${!project.demo ? "disabled" : ""}`}
+                  >
+                    <ExternalLink size={16} /> Demo
+                  </a>
                 </div>
-              </Motion.div>
+
+              </div>
             ))}
           </div>
         </div>
