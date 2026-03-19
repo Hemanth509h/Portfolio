@@ -250,6 +250,10 @@ hr {
   opacity: 0.4;
   pointer-events: none;
 }
+
+
+
+
 /* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
   .projects-title {
