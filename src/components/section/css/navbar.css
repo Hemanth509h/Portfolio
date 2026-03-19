@@ -148,11 +148,12 @@ html {
   color: #6b7280;
   transition: all 0.3s ease;
 }
+.mobile-menu{
+  display: none;
+}
 
 @media (max-width: 768px) {
-  .nav {
-    display: none;
-  }
+  
   .mobile-menu {
     display: block;
   }

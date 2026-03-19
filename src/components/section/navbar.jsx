@@ -19,7 +19,6 @@ export function Navbar() {
       setIsScrolled(window.scrollY > 50);
     };
     window.addEventListener("scroll", handleScroll);
-
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -29,6 +28,7 @@ export function Navbar() {
     >
       <div className="container">
         <div className="inner-row">
+          
           {/* Logo */}
           <a href="#" className="logo-link">
             <div className="logo-icon">
@@ -40,29 +40,19 @@ export function Navbar() {
           </a>
 
           {/* Desktop Nav */}
-          {isMenuOpen && (
-            <div className="mobile-nav">
-              {NAV_LINKS.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="mobile-nav-link"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {link.name}
-                </a>
-              ))}
-
-              <a
-                href="#contact"
-                className="mobile-hire-btn"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Hire Me
+          <nav className="nav">
+            {NAV_LINKS.map((link) => (
+              <a key={link.href} href={link.href} className="nav-link">
+                {link.name}
               </a>
-            </div>
-          )}
+            ))}
 
+            <a href="#contact" className="hire-btn">
+              Hire Me
+            </a>
+          </nav>
+
+          {/* Mobile Menu Button */}
           <div
             className="mobile-menu"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -74,6 +64,30 @@ export function Navbar() {
             )}
           </div>
         </div>
+
+        {/* Mobile Nav */}
+        {isMenuOpen && (
+          <div className="mobile-nav">
+            {NAV_LINKS.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="mobile-nav-link"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {link.name}
+              </a>
+            ))}
+
+            <a
+              href="#contact"
+              className="mobile-hire-btn"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Hire Me
+            </a>
+          </div>
+        )}
       </div>
     </header>
   );
