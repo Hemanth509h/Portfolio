@@ -1,8 +1,22 @@
 import "./css/projects.css";
+import { useState } from "react";
 import { motion as Motion } from "framer-motion";
-import { Github, ExternalLink, Activity, Code } from "lucide-react";
-import netflixPreview from "../../assets/netflix/netflix_page-0001.jpg";
-import walmartPreview from "../../assets/walmart/walmart sales analysis_page-0001.jpg";
+import { Github, ExternalLink, Activity, Code, ChevronLeft, ChevronRight } from "lucide-react";
+
+import netflix1 from "../../assets/netflix/netflix_page-0001.jpg";
+import netflix2 from "../../assets/netflix/netflix_page-0002.jpg";
+import netflix3 from "../../assets/netflix/netflix_page-0003.jpg";
+import netflix4 from "../../assets/netflix/netflix_page-0004.jpg";
+import netflix5 from "../../assets/netflix/netflix_page-0005.jpg";
+import netflix6 from "../../assets/netflix/netflix_page-0006.jpg";
+import netflix7 from "../../assets/netflix/netflix_page-0007.jpg";
+import netflix8 from "../../assets/netflix/netflix_page-0008.jpg";
+
+import walmart1 from "../../assets/walmart/walmart sales analysis_page-0001.jpg";
+import walmart2 from "../../assets/walmart/walmart sales analysis_page-0002.jpg";
+import walmart3 from "../../assets/walmart/walmart sales analysis_page-0003.jpg";
+import walmart4 from "../../assets/walmart/walmart sales analysis_page-0004.jpg";
+import walmart5 from "../../assets/walmart/walmart sales analysis_page-0005.jpg";
 
 /* ================= PROJECT DATA ================= */
 const PROJECTS = [
@@ -43,7 +57,7 @@ const PROJECTS = [
     title: "Netflix Data Analysis",
     type: "Power Bi",
     icon: Activity,
-    image: netflixPreview,
+    images: [netflix1, netflix2, netflix3, netflix4, netflix5, netflix6, netflix7, netflix8],
     description:
       "Performed EDA, visualization, and statistical analysis on Netflix dataset.",
     tags: ["Power Bi", "Data Analysis", "Visualization"],
@@ -55,7 +69,7 @@ const PROJECTS = [
     title: "Walmart Data Analysis",
     type: "Power Bi",
     icon: Activity,
-    image: walmartPreview,
+    images: [walmart1, walmart2, walmart3, walmart4, walmart5],
     description:
       "Performed EDA, visualization, and statistical analysis on Walmart dataset.",
     tags: ["Power Bi", "Data Analysis", "Visualization"],
@@ -65,12 +79,52 @@ const PROJECTS = [
   },
 ];
 
-
 const groupedProjects = PROJECTS.reduce((acc, project) => {
   if (!acc[project.category]) acc[project.category] = [];
   acc[project.category].push(project);
   return acc;
 }, {});
+
+/* ================= IMAGE SLIDER ================= */
+function ImageSlider({ images, title }) {
+  const [current, setCurrent] = useState(0);
+
+  const prev = (e) => {
+    e.stopPropagation();
+    setCurrent((c) => (c - 1 + images.length) % images.length);
+  };
+
+  const next = (e) => {
+    e.stopPropagation();
+    setCurrent((c) => (c + 1) % images.length);
+  };
+
+  return (
+    <div className="slider">
+      <img src={images[current]} alt={`${title} slide ${current + 1}`} className="slider-img" />
+
+      <button className="slider-btn slider-btn-left" onClick={prev} aria-label="Previous">
+        <ChevronLeft size={18} />
+      </button>
+      <button className="slider-btn slider-btn-right" onClick={next} aria-label="Next">
+        <ChevronRight size={18} />
+      </button>
+
+      <div className="slider-dots">
+        {images.map((_, i) => (
+          <button
+            key={i}
+            className={`slider-dot ${i === current ? "active" : ""}`}
+            onClick={(e) => { e.stopPropagation(); setCurrent(i); }}
+            aria-label={`Go to slide ${i + 1}`}
+          />
+        ))}
+      </div>
+
+      <span className="slider-counter">{current + 1} / {images.length}</span>
+    </div>
+  );
+}
 
 /* ================= COMPONENT ================= */
 export function Projects() {
@@ -114,11 +168,9 @@ export function Projects() {
                 viewport={{ once: true }}
                 className="project-card"
               >
-                {/* PREVIEW IMAGE */}
-                {project.image && (
-                  <div className="project-image">
-                    <img src={project.image} alt={project.title} />
-                  </div>
+                {/* IMAGE SLIDER */}
+                {project.images && (
+                  <ImageSlider images={project.images} title={project.title} />
                 )}
 
                 {/* HEADER */}
