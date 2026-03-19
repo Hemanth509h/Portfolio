@@ -91,7 +91,7 @@ body {
   font-size: 72px;
   font-weight: 700;
   background: linear-gradient(90deg, #06b6d4, #38bdf8, #60a5fa);
-  -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 20px;
 }
@@ -232,6 +232,12 @@ body {
   .hero-description {
     font-size: 16px;
   }
-  
+  .buttons {
+    flex-direction: column;
+  }
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
   
 }
