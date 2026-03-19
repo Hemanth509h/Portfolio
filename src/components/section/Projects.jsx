@@ -47,7 +47,7 @@ const PROJECTS = [
     type: "Full Stack using Python",
       icon: Code,
         description:
-  "Online grocery platform with user login, cart, admin dashboard and MySQL database.",
+  "Billing Software using Python with GUI: This project includes features for managing customer bills with a user-friendly interface. Each bill is saved as a PDF for printing and record-keeping, while the complete bill history is stored in an Excel file for easy access and analysis.",
     tags: ["Python", "Flask", "Jinja2", "JavaScript", "MySQL"],
       code: "https://github.com/Hemanth509h/Grocerly-Management-System.git",
         demo: "",
@@ -58,7 +58,7 @@ const PROJECTS = [
     type: "React + Python",
       icon: Code,
         description:
-  "Web app to analyze Walmart dataset trends with React frontend and Python backend.",
+  "Trendcast is a web application that provides real-time insights into trending topics on Twitter. It features a user-friendly interface built with React, allowing users to explore and analyze Twitter trends. The backend, developed in Python, fetches and processes Twitter data to deliver up-to-date trend information, making it a powerful tool for soc",
     tags: ["React", "Python", "Data Analysis"],
       code: "https://github.com/Hemanth509h/Trendcast.git",
         demo: "",
