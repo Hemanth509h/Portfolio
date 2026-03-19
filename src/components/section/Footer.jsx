@@ -9,12 +9,12 @@ export function Footer() {
           <div className="footer-left">
             <Terminal className="footer-icon" />
             <span className="footer-logo">
-              Alex<span className="highlight">.dev</span>
+              P hemanth kumar<span className="highlight">.dev</span>
             </span>
           </div>
 
           <p className="footer-text">
-            © {new Date().getFullYear()} Alex Johnson. All rights reserved.
+            © {new Date().getFullYear()} Peddaboina hemanth kumar. All rights reserved.
           </p>
 
         </div>
