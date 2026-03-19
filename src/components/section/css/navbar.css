@@ -141,9 +141,7 @@ html {
   scroll-behavior: smooth;
 }
 
-.mobile-menu {
-  display: none;
-}
+
 .menu-icon {
   width: 24px;
   height: 24px;
