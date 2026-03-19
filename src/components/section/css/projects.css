@@ -30,13 +30,17 @@
 
 /* ================= GRID ================= */
 .projects-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
   gap: 30px;
-  width: 100%;
   max-width: 1200px;
 }
-
+.project-card {
+  flex: 1 1 calc(33.33% - 30px); 
+  max-width: calc(33.33% - 30px);
+}
 /* ================= CARD ================= */
 .project-card {
   background: rgba(15, 23, 42, 0.6);
@@ -251,5 +255,20 @@ hr {
 
   .projects-description2 {
     font-size: 1rem;
+  }
+}
+/* Tablet → 2 columns */
+@media (max-width: 900px) {
+  .project-card {
+    flex: 1 1 calc(50% - 30px);
+    max-width: calc(50% - 30px);
+  }
+}
+
+/* Mobile → 1 column */
+@media (max-width: 600px) {
+  .project-card {
+    flex: 1 1 100%;
+    max-width: 100%;
   }
 }
