@@ -38,8 +38,8 @@ const PROJECTS = [
     description:
       "This project demonstrates a Login and Registration Page built using Python and MongoDB, aimed at providing secure and user- friendly authentication functionality for applications.The project utilizes Flask(a Python web framework) for backend development and MongoDB for database management.",
     tags: ["Python","MongoDB",'HTML','javascript'],
-    code: "https://github.com/Hemanth509h/The_Billing_Software.git",
-      demo: "",
+    code: "https://github.com/Hemanth509h/login_an_register.git",
+      demo: "https://loginregisterpages.vercel.app/",
         category: "Full Stack & Web Apps",
   },
 {
@@ -50,7 +50,7 @@ const PROJECTS = [
   "Billing Software using Python with GUI: This project includes features for managing customer bills with a user-friendly interface. Each bill is saved as a PDF for printing and record-keeping, while the complete bill history is stored in an Excel file for easy access and analysis.",
     tags: ["Python", "Flask", "Jinja2", "JavaScript", "MySQL"],
       code: "https://github.com/Hemanth509h/Grocerly-Management-System.git",
-        demo: "",
+        demo: "https://elitegrocers.vercel.app/",
           category: "Full Stack & Web Apps",
   },
 {
@@ -61,7 +61,7 @@ const PROJECTS = [
   "Trendcast is a web application that provides real-time insights into trending topics on Twitter. It features a user-friendly interface built with React, allowing users to explore and analyze Twitter trends. The backend, developed in Python, fetches and processes Twitter data to deliver up-to-date trend information, making it a powerful tool for soc",
     tags: ["React", "Python", "Data Analysis"],
       code: "https://github.com/Hemanth509h/Trendcast.git",
-        demo: "",
+        demo: "https://trendcasts.vercel.app/",
           category: "Full Stack & Web Apps",
   },
 {
