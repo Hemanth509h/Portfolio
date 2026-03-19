@@ -5,6 +5,8 @@ import {Aboutme} from '../section/Aboutme';
 import {Skills} from '../section/skills';
 import {Projects} from '../section/Projects';
 import {Experience} from '../section/Experience';
+import {ContactSection } from '../section/contact';
+import {Footer} from '../section/Footer';
 
 
 
@@ -18,6 +20,8 @@ function Home() {
         <Skills />
         <Projects />
         <Experience />
+        <ContactSection />
+        <Footer />
      </div>
     </div>
   );

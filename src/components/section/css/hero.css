@@ -170,6 +170,11 @@ body {
 
 /* responsive */
 @media (max-width: 768px) {
+  .hero-section {
+  
+  height: 110vh;
+ 
+}
   .hero-heading {
     font-size: 48px;
   }
