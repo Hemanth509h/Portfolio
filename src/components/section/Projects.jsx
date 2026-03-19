@@ -38,19 +38,30 @@ const PROJECTS = [
     category: "Full Stack & Web Apps",
   },
   {
+    title: "Netflix Data Analysis",
+    type: "Power Bi",
+    icon: Activity,
+    description:
+      "Performed EDA, visualization, and statistical analysis on Netflix dataset.",
+    tags: ["Power Bi", "Data Analysis", "Visualization"],
+    code: "https://github.com/Hemanth509h/Data-analysis/tree/main/netflix%20analysis",
+    demo: "",
+    category: "Data Analysis",
+  },
+   {
     title: "Walmart Data Analysis",
-    type: "Python + Jupyter",
+    type: "Power Bi",
     icon: Activity,
     description:
       "Performed EDA, visualization, and statistical analysis on Walmart dataset.",
-    tags: ["Python", "Pandas", "EDA", "Visualization"],
-    code: "https://github.com/Hemanth509h/Data-Analysis-on-Walmart-Dataset.git",
+    tags: ["Power Bi", "Data Analysis", "Visualization"],
+    code: "https://github.com/Hemanth509h/Data-analysis/tree/main/walmart%20analysis",
     demo: "",
     category: "Data Analysis",
   },
 ];
 
-/* ================= GROUP BY CATEGORY ================= */
+
 const groupedProjects = PROJECTS.reduce((acc, project) => {
   if (!acc[project.category]) acc[project.category] = [];
   acc[project.category].push(project);
