@@ -60,11 +60,11 @@ export function HeroSection() {
           className="hero-buttons"
         >
           <div className="buttons">
-            <button className="btn btn1">
+            <a className="btn btn1" href="#projects">
               View My Work
               <ArrowRight className="buttonarrowright" />
-            </button>
-            <button className="btn">Contact Me</button>
+            </a>
+            <a className="btn" href="#contact">Contact Me</a>
           </div>
         </Motion.div>
       </div>
