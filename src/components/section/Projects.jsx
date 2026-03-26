@@ -21,6 +21,28 @@ import walmart5 from "../../assets/walmart/walmart sales analysis_page-0005.jpg"
 /* ================= PROJECT DATA ================= */
 const PROJECTS = [
   {
+    title: "VISION VORTEX Hackathon (VNR VJIET)",
+    type: "24hr National Hackathon",
+    icon: Code,
+    description:
+      "Participated in VISION VORTEX, a 24-hour national-level hackathon focused on Gender Diversity at VNR VJIET, Hyderabad. Collaborated in a team to design and prototype solutions under strict time constraints.",
+    tags: ["Hackathon", "Innovation", "Teamwork"],
+    highlights: [
+      "24-hour rapid development",
+      "Focused on Gender Diversity",
+      "Team-based collaboration",
+      "Real-time problem solving"
+    ],
+    tech: ["React", "Python", "Flask"],
+    role: "Team Member",
+    date: "March 24-25, 2026",
+    location: "Hyderabad",
+    code: "",
+    demo: "",
+    category: "🏆 Hackathon Projects",
+  },
+
+  {
     title: "The Billing Software",
     type: "Python with GUI",
     icon: Code,
@@ -28,9 +50,10 @@ const PROJECTS = [
       "Billing Software using Python with GUI. Generates PDF bills and stores history in Excel.",
     tags: ["Python", "GUI", "PDF", "Excel"],
     code: "https://github.com/Hemanth509h/The_Billing_Software.git",
-    demo: "", 
+    demo: "",
     category: "Full Stack & Web Apps",
   },
+
   {
     title: "Login & Register (MongoDB)",
     type: "Python + MongoDB",
@@ -42,6 +65,7 @@ const PROJECTS = [
     demo: "https://loginregisterpages.vercel.app/",
     category: "Full Stack & Web Apps",
   },
+
   {
     title: "Grocery Management System",
     type: "Full Stack",
@@ -53,6 +77,7 @@ const PROJECTS = [
     demo: "https://elitegrocers.vercel.app/",
     category: "Full Stack & Web Apps",
   },
+
   {
     title: "Trendcast",
     type: "React + Python",
@@ -64,6 +89,7 @@ const PROJECTS = [
     demo: "https://trendcasts.vercel.app/",
     category: "Full Stack & Web Apps",
   },
+
   {
     title: "Netflix Data Analysis",
     type: "Power BI",
@@ -75,6 +101,7 @@ const PROJECTS = [
     demo: "",
     category: "Data Analysis",
   },
+
   {
     title: "Walmart Data Analysis",
     type: "Power BI",
@@ -154,7 +181,7 @@ export function Projects() {
           Featured Work
         </Motion.h1>
         <p className="projects-description2">
-          My full stack & data analysis projects
+          My full stack, data analysis & hackathon projects
         </p>
       </div>
 
@@ -181,6 +208,15 @@ export function Projects() {
                   {project.description}
                 </p>
 
+                {/* 🔥 NEW: Highlights */}
+                {project.highlights && (
+                  <ul className="project-highlights">
+                    {project.highlights.map((h, i) => (
+                      <li key={i}>• {h}</li>
+                    ))}
+                  </ul>
+                )}
+
                 <div className="project-tags">
                   {project.tags.map((tag, i) => (
                     <span key={i} className="project-tag">
@@ -191,7 +227,6 @@ export function Projects() {
 
                 <hr />
 
-                {/* ✅ FIXED FOOTER */}
                 <div className="project-footer">
                   <a href={project.code} target="_blank" className="project-link">
                     <Github size={16} /> Code
