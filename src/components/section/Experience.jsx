@@ -13,6 +13,19 @@ const EXPERIENCES = [
       "Collaborated with industry professionals, gaining insights into the latest technologies and industry practices, and enhanced my understanding of the software development lifecycle.",
     ],
   },
+   {
+    role: "Web Development",
+    company: "INFOTACT SOLUTIONS",
+    period: "03/2026 - 06/2026",
+    description: [
+    "Selected as an Associate L1 intern at Infotact Solutions in a fully remote role, working on real-world web development projects.",
+    "Collaborating with the development team to design, develop, test, and deploy responsive web applications based on project requirements.",
+    "Writing clean, efficient, and maintainable code using technologies such as HTML, CSS, JavaScript, React.js, and Node.js.",
+    "Participating in code reviews, debugging issues, and optimizing performance to ensure high-quality user experience.",
+    "Gaining hands-on experience with modern development workflows, APIs, and system design while working in a professional environment.",
+    "Providing weekly progress updates and continuously improving skills through learning new tools, frameworks, and best practices."
+  ],
+  },
 ];
 
 export function Experience() {
