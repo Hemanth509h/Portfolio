@@ -110,7 +110,7 @@ const PROJECTS = [
     role: "Team Member",
     date: "March 24-25, 2026",
     location: "Hyderabad",
-    code: "",
+    code: "https://github.com/Hemanth509h/Code-Presentation-Hub.git",
     demo: "",
     category: "🏆 Hackathon Projects",
   },
