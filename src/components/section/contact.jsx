@@ -2,6 +2,8 @@ import "./css/contact.css";
 import { useForm } from "react-hook-form";
 import { Mail, MapPin, Github, Linkedin, Twitter, Send } from "lucide-react";
 import { motion as Motion } from "framer-motion";
+import emailjs from "@emailjs/browser";
+import { useState } from "react";
 
 export function ContactSection() {
   const form = useForm({
@@ -12,9 +14,31 @@ export function ContactSection() {
     },
   });
 
+  const [loading, setLoading] = useState(false);
+
   function onSubmit(data) {
-    console.log("Form Data:", data);
-    form.reset();
+    setLoading(true);
+
+    emailjs
+      .send(
+        "service_v573mxk",     // 🔴 replace
+        "template_4xehrtb",    // 🔴 replace
+        {
+          from_name: data.name,
+          from_email: data.email,
+          message: data.message,
+        },
+        "YOUR_PUBLIC_KEY"      // 🔴 replace
+      )
+      .then(() => {
+        alert("Message sent successfully ✅");
+        form.reset();
+        setLoading(false);
+      })
+      .catch(() => {
+        alert("Failed to send ❌");
+        setLoading(false);
+      });
   }
 
   /* ================= ANIMATIONS ================= */
@@ -64,11 +88,7 @@ export function ContactSection() {
         >
 
           {/* LEFT SIDE */}
-          <Motion.div
-            className="glass-panel contact-info"
-            variants={fadeUp}
-          >
-
+          <Motion.div className="glass-panel contact-info" variants={fadeUp}>
             <div>
               <h3>Contact Information</h3>
 
@@ -97,14 +117,10 @@ export function ContactSection() {
                 <Twitter />
               </div>
             </div>
-
           </Motion.div>
 
           {/* RIGHT SIDE */}
-          <Motion.div
-            className="glass-panel contact-form"
-            variants={fadeUp}
-          >
+          <Motion.div className="glass-panel contact-form" variants={fadeUp}>
 
             <form onSubmit={form.handleSubmit(onSubmit)}>
 
@@ -162,11 +178,12 @@ export function ContactSection() {
               {/* BUTTON */}
               <Motion.button
                 type="submit"
+                disabled={loading}
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
               >
                 <Send size={16} />
-                Send Message
+                {loading ? "Sending..." : "Send Message"}
               </Motion.button>
 
             </form>
