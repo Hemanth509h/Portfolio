@@ -28,7 +28,7 @@ export function ContactSection() {
           from_email: data.email,
           message: data.message,
         },
-        "YOUR_PUBLIC_KEY"      // 🔴 replace
+        "u7T_9mDN6lzVcXe5E"      // 🔴 replace
       )
       .then(() => {
         alert("Message sent successfully ✅");
