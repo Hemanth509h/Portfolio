@@ -37,13 +37,15 @@
   gap: 30px;
   max-width: 1200px;
 }
+
 .project-card {
-  flex: 1 1 calc(33.33% - 30px); 
+  flex: 1 1 calc(33.33% - 30px);
   max-width: calc(33.33% - 30px);
 }
+
 /* ================= CARD ================= */
 .project-card {
-  background: rgba(15, 23, 42, 0.6);
+  background: linear-gradient(145deg, #0b1220, #0f172a);
   border: 1px solid rgba(148, 163, 184, 0.15);
   backdrop-filter: blur(12px);
   border-radius: 18px;
@@ -53,11 +55,12 @@
   max-width: 400px;
 }
 
-/* hover glow */
+/* 🔥 Hover Glow Upgrade */
 .project-card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-6px) scale(1.01);
   border-color: #38bdf8;
-  box-shadow: 0 0 25px rgba(56, 189, 248, 0.15);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3),
+              0 0 40px rgba(59, 130, 246, 0.15);
 }
 
 /* ================= HEADER ================= */
@@ -93,7 +96,20 @@
   font-size: 0.95rem;
   color: #94a3b8;
   line-height: 1.6;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+}
+
+/* ================= 🔥 HACKATHON HIGHLIGHTS ================= */
+.project-highlights {
+  margin: 10px 0;
+  padding-left: 18px;
+}
+
+.project-highlights li {
+  font-size: 0.85rem;
+  color: #e2e8f0; /* FIXED: brighter text */
+  margin-bottom: 5px;
+  line-height: 1.4;
 }
 
 /* ================= TAGS ================= */
@@ -106,16 +122,23 @@
 
 .project-tag {
   font-size: 0.75rem;
-  padding: 5px 10px;
+  padding: 6px 12px;
   border-radius: 999px;
   background: rgba(148, 163, 184, 0.1);
   color: #cbd5f5;
+  transition: 0.3s;
+}
+
+.project-tag:hover {
+  background: #2563eb;
+  color: white;
 }
 
 /* ================= FOOTER ================= */
 .project-footer {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  align-items: center;
   margin-top: 15px;
 }
 
@@ -132,20 +155,21 @@
 
 .project-link:hover {
   color: #0ea5e9;
-  
 }
+
+.project-link.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* divider */
 hr {
   border: none;
   border-top: 1px solid rgba(148, 163, 184, 0.15);
   margin: 10px 0;
 }
-.project-footer{
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
 
-}
-/* CATEGORY TITLE */
+/* ================= CATEGORY ================= */
 .category-section {
   width: 100%;
   max-width: 1200px;
@@ -160,6 +184,7 @@ hr {
   border-left: 4px solid #38bdf8;
   padding-left: 10px;
 }
+
 /* ================= SLIDER ================= */
 .slider {
   position: relative;
@@ -175,8 +200,6 @@ hr {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
-  transition: opacity 0.3s ease;
 }
 
 .slider-btn {
@@ -193,21 +216,10 @@ hr {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.2s;
-  z-index: 2;
 }
 
-.slider-btn:hover {
-  background: rgba(56, 189, 248, 0.25);
-}
-
-.slider-btn-left {
-  left: 8px;
-}
-
-.slider-btn-right {
-  right: 8px;
-}
+.slider-btn-left { left: 8px; }
+.slider-btn-right { right: 8px; }
 
 .slider-dots {
   position: absolute;
@@ -216,18 +228,13 @@ hr {
   transform: translateX(-50%);
   display: flex;
   gap: 5px;
-  z-index: 2;
 }
 
 .slider-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  border: none;
   background: rgba(255, 255, 255, 0.35);
-  cursor: pointer;
-  padding: 0;
-  transition: background 0.2s, transform 0.2s;
 }
 
 .slider-dot.active {
@@ -244,27 +251,9 @@ hr {
   background: rgba(2, 6, 23, 0.6);
   padding: 2px 7px;
   border-radius: 999px;
-  z-index: 2;
 }
-.project-link.disabled {
-  opacity: 0.4;
-  pointer-events: none;
-}
-
-
-
 
 /* ================= RESPONSIVE ================= */
-@media (max-width: 768px) {
-  .projects-title {
-    font-size: 2rem;
-  }
-
-  .projects-description2 {
-    font-size: 1rem;
-  }
-}
-/* Tablet → 2 columns */
 @media (max-width: 900px) {
   .project-card {
     flex: 1 1 calc(50% - 30px);
@@ -272,7 +261,6 @@ hr {
   }
 }
 
-/* Mobile → 1 column */
 @media (max-width: 600px) {
   .project-card {
     flex: 1 1 100%;
