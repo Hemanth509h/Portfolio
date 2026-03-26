@@ -22,17 +22,6 @@ import walmart5 from "../../assets/walmart/walmart sales analysis_page-0005.jpg"
 const PROJECTS = [
  
 
-  {
-    title: "The Billing Software",
-    type: "Python with GUI",
-    icon: Code,
-    description:
-      "Billing Software using Python with GUI. Generates PDF bills and stores history in Excel.",
-    tags: ["Python", "GUI", "PDF", "Excel"],
-    code: "https://github.com/Hemanth509h/The_Billing_Software.git",
-    demo: "",
-    category: "Full Stack & Web Apps",
-  },
 
   {
     title: "Login & Register (MongoDB)",
@@ -113,6 +102,18 @@ const PROJECTS = [
     code: "https://github.com/Hemanth509h/Code-Presentation-Hub.git",
     demo: "",
     category: "🏆 Hackathon Projects",
+  },
+ 
+  {
+    title: "The Billing Software",
+    type: "Python with GUI",
+    icon: Code,
+    description:
+      "Billing Software using Python with GUI. Generates PDF bills and stores history in Excel.",
+    tags: ["Python", "GUI", "PDF", "Excel"],
+    code: "https://github.com/Hemanth509h/The_Billing_Software.git",
+    demo: "",
+    category: "Full Stack & Web Apps",
   },
 ];
 
