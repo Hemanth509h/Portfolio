@@ -9,7 +9,6 @@ const EXPERIENCES = [
     period: "05/2024 - 10/2024",
     description: [
       "Gained hands-on experience in the field of Computer Science and Engineering through a comprehensive 6-month industrial training program at NSIC Technology Service Centre, Hyderabad.",
-      "Worked on real-world projects, applying theoretical knowledge to practical scenarios, and developed skills in software development, data analysis, and problem-solving.",
       "Collaborated with industry professionals, gaining insights into the latest technologies and industry practices, and enhanced my understanding of the software development lifecycle.",
     ],
   },
