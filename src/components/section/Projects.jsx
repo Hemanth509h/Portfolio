@@ -144,8 +144,6 @@ function ImageSlider({ images, title }) {
     </div>
   );
 }
-import { motion as Motion } from "framer-motion";
-import { Github, ExternalLink } from "lucide-react";
 
 /* ================= ANIMATION VARIANTS ================= */
 const containerVariants = {
