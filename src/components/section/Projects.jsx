@@ -28,11 +28,9 @@ const PROJECTS = [
       "Billing Software using Python with GUI. Generates PDF bills and stores history in Excel.",
     tags: ["Python", "GUI", "PDF", "Excel"],
     code: "https://github.com/Hemanth509h/The_Billing_Software.git",
-    demo: "",
+    demo: "", 
     category: "Full Stack & Web Apps",
   },
-
-
   {
     title: "Login & Register (MongoDB)",
     type: "Python + MongoDB",
@@ -44,7 +42,6 @@ const PROJECTS = [
     demo: "https://loginregisterpages.vercel.app/",
     category: "Full Stack & Web Apps",
   },
-
   {
     title: "Grocery Management System",
     type: "Full Stack",
@@ -56,7 +53,6 @@ const PROJECTS = [
     demo: "https://elitegrocers.vercel.app/",
     category: "Full Stack & Web Apps",
   },
-
   {
     title: "Trendcast",
     type: "React + Python",
@@ -68,7 +64,6 @@ const PROJECTS = [
     demo: "https://trendcasts.vercel.app/",
     category: "Full Stack & Web Apps",
   },
-
   {
     title: "Netflix Data Analysis",
     type: "Power BI",
@@ -80,7 +75,6 @@ const PROJECTS = [
     demo: "",
     category: "Data Analysis",
   },
-
   {
     title: "Walmart Data Analysis",
     type: "Power BI",
@@ -92,29 +86,6 @@ const PROJECTS = [
     demo: "",
     category: "Data Analysis",
   },
-   {
-    title: "VISION VORTEX Hackathon (VNR VJIET)",
-    type: "24hr National Hackathon",
-    icon: Code,
-    description:
-      "Participated in VISION VORTEX, a 24-hour national-level hackathon focused on Gender Diversity at VNR VJIET, Hyderabad. Collaborated in a team to design and prototype solutions under strict time constraints.",
-    tags: ["Hackathon", "Innovation", "Teamwork"],
-    highlights: [
-      "24-hour rapid development",
-      "Focused on Gender Diversity",
-      "Team-based collaboration",
-      "Real-time problem solving"
-    ],
-    tech: ["React", "Python", "Flask"],
-    role: "Team Member",
-    date: "March 24-25, 2026",
-    location: "Hyderabad",
-    code: "https://github.com/Hemanth509h/Code-Presentation-Hub.git",
-    demo: "",
-    category: "🏆 Hackathon Projects",
-  },
- 
- 
 ];
 
 /* ================= GROUP ================= */
@@ -173,52 +144,115 @@ function ImageSlider({ images, title }) {
     </div>
   );
 }
+import { motion as Motion } from "framer-motion";
+import { Github, ExternalLink } from "lucide-react";
+
+/* ================= ANIMATION VARIANTS ================= */
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: {
+    opacity: 0,
+    y: 50,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+    },
+  },
+};
 
 /* ================= COMPONENT ================= */
 export function Projects() {
   return (
-    <section className="projectssection" id="projects">
+    <Motion.section
+      className="projectssection"
+      id="projects"
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+    >
+      {/* HEADER */}
       <div className="projects-description">
-        <Motion.h1 className="projects-title">
+        <Motion.h1
+          className="projects-title"
+          initial={{ opacity: 0, y: -40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
           Featured Work
         </Motion.h1>
-        <p className="projects-description2">
-          My full stack, data analysis & hackathon projects
-        </p>
+
+        <Motion.p
+          className="projects-description2"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          My full stack & data analysis projects
+        </Motion.p>
       </div>
 
+      {/* PROJECT GROUPS */}
       {Object.entries(groupedProjects).map(([category, projects]) => (
         <div key={category} className="category-section">
-          <h2 className="category-title">{category}</h2>
+          
+          {/* CATEGORY TITLE */}
+          <Motion.h2
+            className="category-title"
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            {category}
+          </Motion.h2>
 
+          {/* PROJECT CARDS */}
           <div className="projects-container">
             {projects.map((project, index) => (
-              <div key={index} className="project-card">
-
+              <Motion.div
+                key={index}
+                className="project-card"
+                variants={cardVariants}
+                whileHover={{ scale: 1.05 }}
+              >
+                {/* IMAGE SLIDER */}
                 {project.images && (
-                  <ImageSlider images={project.images} title={project.title} />
+                  <ImageSlider
+                    images={project.images}
+                    title={project.title}
+                  />
                 )}
 
+                {/* HEADER */}
                 <div className="project-header">
                   <project.icon size={22} />
-                  <span className="project-type">{project.type}</span>
+                  <span className="project-type">
+                    {project.type}
+                  </span>
                 </div>
 
-                <h3 className="project-title">{project.title}</h3>
+                {/* TITLE */}
+                <h3 className="project-title">
+                  {project.title}
+                </h3>
 
+                {/* DESCRIPTION */}
                 <p className="project-description">
                   {project.description}
                 </p>
 
-                {/* 🔥 NEW: Highlights */}
-                {project.highlights && (
-                  <ul className="project-highlights">
-                    {project.highlights.map((h, i) => (
-                      <li key={i}>• {h}</li>
-                    ))}
-                  </ul>
-                )}
-
+                {/* TAGS */}
                 <div className="project-tags">
                   {project.tags.map((tag, i) => (
                     <span key={i} className="project-tag">
@@ -229,25 +263,33 @@ export function Projects() {
 
                 <hr />
 
+                {/* FOOTER */}
                 <div className="project-footer">
-                  <a href={project.code} target="_blank" className="project-link">
+                  <a
+                    href={project.code}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="project-link"
+                  >
                     <Github size={16} /> Code
                   </a>
 
                   <a
                     href={project.demo || "#"}
                     target="_blank"
-                    className={`project-link ${!project.demo ? "disabled" : ""}`}
+                    rel="noopener noreferrer"
+                    className={`project-link ${
+                      !project.demo ? "disabled" : ""
+                    }`}
                   >
                     <ExternalLink size={16} /> Demo
                   </a>
                 </div>
-
-              </div>
+              </Motion.div>
             ))}
           </div>
         </div>
       ))}
-    </section>
+    </Motion.section>
   );
 }
