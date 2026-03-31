@@ -1,6 +1,6 @@
 import "./css/contact.css";
 import { useForm } from "react-hook-form";
-import { Mail, MapPin, Github, Linkedin, Twitter, Send } from "lucide-react";
+import { Mail, MapPin, Github, Linkedin, Instagram, Send } from "lucide-react";
 import { motion as Motion } from "framer-motion";
 import emailjs from "@emailjs/browser";
 import { useState } from "react";
@@ -111,11 +111,16 @@ export function ContactSection() {
 
             <div className="social">
               <p>Follow Me</p>
-              <div className="social-icons">
-                <Github />
-                <Linkedin />
-                <Twitter />
-              </div>
+              <a href="https://github.com/Hemanth509h" target="_blank" rel="noopener noreferrer">
+      <Github />
+    </a>
+
+    <a href="https://www.linkedin.com/in/peddaboinahemanthkumar/" target="_blank" rel="noopener noreferrer">
+      <Linkedin />
+    </a>
+                <a href="https://www.instagram.com/hemanth_kumar_509/" target="_blank" rel="noopener noreferrer">
+      <Instagram />
+    </a>
             </div>
           </Motion.div>
 
