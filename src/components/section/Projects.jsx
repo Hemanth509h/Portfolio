@@ -86,6 +86,27 @@ const PROJECTS = [
     demo: "",
     category: "Data Analysis",
   },
+   {
+    title: "VISION VORTEX Hackathon (VNR VJIET)",
+    type: "24hr National Hackathon",
+    icon: Code,
+    description:
+      "Participated in VISION VORTEX, a 24-hour national-level hackathon focused on Gender Diversity at VNR VJIET, Hyderabad. Collaborated in a team to design and prototype solutions under strict time constraints.",
+    tags: ["Hackathon", "Innovation", "Teamwork"],
+    highlights: [
+      "24-hour rapid development",
+      "Focused on Gender Diversity",
+      "Team-based collaboration",
+      "Real-time problem solving"
+    ],
+    tech: ["React", "Python", "Flask"],
+    role: "Team Member",
+    date: "March 24-25, 2026",
+    location: "Hyderabad",
+    code: "https://github.com/Hemanth509h/Code-Presentation-Hub.git",
+    demo: "",
+    category: "🏆 Hackathon Projects",
+  },
 ];
 
 /* ================= GROUP ================= */
