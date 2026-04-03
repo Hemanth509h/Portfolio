@@ -87,11 +87,11 @@ const PROJECTS = [
     category: "Data Analysis",
   },
    {
-    title: "VISION VORTEX Hackathon (VNR VJIET)",
+    title: "24-hour National Level Design-A-Thon at VNR VJIET.",
     type: "24hr National Hackathon",
     icon: Code,
     description:
-      "Participated in VISION VORTEX, a 24-hour national-level hackathon focused on Gender Diversity at VNR VJIET, Hyderabad. Collaborated in a team to design and prototype solutions under strict time constraints.",
+      "Participated in 24-hour National Level Design-A-Thon at VNR VJIET, a 24-hour national-level hackathon focused on Gender Diversity at VNR VJIET, Hyderabad. Collaborated in a team to design and prototype solutions under strict time constraints.",
     tags: ["Hackathon", "Innovation", "Teamwork"],
     highlights: [
       "24-hour rapid development",
